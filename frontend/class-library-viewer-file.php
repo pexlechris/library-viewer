@@ -89,16 +89,11 @@ class Library_Viewer_File extends Library_Viewer_File_Alias
 	 *
 	 * @since 3.0.0
 	 */
-	public function __construct( $file_identifier = false, $register_hooks = true )
+	public function __construct( $register_hooks = true )
 	{
 		$this->class_names = array_reverse(array_values(array_merge([get_class($this)], class_parents($this))));
 
-		$this->globals['file_identifier'] = $file_identifier !== false
-			? $file_identifier
-			/**
-			 * @ignore
-			 */
-			: apply_filters('lv_file_identifier', 'LV');
+		$this->globals['file_identifier'] = Library_Viewer_Init::get_file_identifier();
 
 		if($register_hooks){
 			add_action('wp_loaded', [$this, 'file_viewer_action']);

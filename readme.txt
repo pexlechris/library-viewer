@@ -5,10 +5,10 @@ Plugin URI: https://www.pexlechris.dev/library-viewer
 Author: Pexle Chris
 Author URI: https://www.pexlechris.dev
 Tags: FTP, file manager, file list, download manager
-Version: 3.2.0
-Stable tag: 3.2.0
+Version: 3.3.0
+Stable tag: 3.3.0
 Requires at least: 3.0.0
-Tested up to: 6.9
+Tested up to: 6.8.1
 Requires PHP: 7.0
 Tested up to PHP: 8.2
 License: GPLv2
@@ -146,7 +146,6 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
 
 
  = Library Viewer does not work properly and/or I get some ERRORS. Why? =
- - Check your permalinks PLAIN PERMALINKS ARE NOT SUPPORTED. Please change your permalink from /wp-admin/options-permalink.php to something else.
  - Check the folders' and files' read permissions (safe choice is to use 644)
  - If you use the plugin **Remove Uppercase Ascents** and a CSS code like *.library-viewer--folder{text-transform: uppercase;}* maybe this cause the problem. The solution in this case is to use instead this CSS code: .library-viewer--folder h3 a{text-transform: uppercase;}
 - Check if the file or folder has special characters in its name. Some are not supported as names of folders and files such as %.
@@ -210,11 +209,26 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
 
 
 == Changelog ==
+ = 3.3.0 =
+* [New]: **Plain permalinks & preview pages are now supported** in the library-viewer shortcode!
+* [New]: Autoload behavior can now be controlled via the filter `lv_autoload_shortcodes`. It is recommended to autoload this option **only if shortcodes are used on every page**.
+* [New]: New filter introduced: `lv_should_load_shortcode` to control whether the shortcode should be loaded in the current request.
+* [New]: Added public static method `Library_Viewer_Init::get_file_identifier()` to retrieve the LV file identifier.
+* [New]: Added public static method `Library_Viewer_Init::should_load_file_viewer()` to determine if the file viewer should be loaded for the current request.
+* [New]: New filter introduced: `lv_should_load_file_viewer` to control whether the Library Viewer's file viewer should be loaded.
+* [Enhancement]: `load_plugin_textdomain` is now hooked to `init` with priority 1 instead of 10.
+* [Enhancement]: Code refactor of class `Library_Viewer_Init`.
+* [Enhancement]: Option `library-viewer-shortcodes` **is no longer autoloaded by default**.
+* [Enhancement]: Renamed class `Library_Viewer_Plugin_Page` to `Library_Viewer_Plugin_Row` to better reflect that it handles the plugin row (action links & meta links) in the Plugins page.
+* [Enhancement]: Updated require path to 'class-library-viewer-plugin-row.php' and instantiation to `new Library_Viewer_Plugin_Row();`
+* [Enhancement]: Not save in option `library-viewer-shortcodes` rest api URLs (/wp-json/)
+* [Deprecated]: Method `Library_Viewer_Init::is_frontend()` method has been deprecated. Use `Library_Viewer_Init::should_load_shortcode()` instead, after init with priority 10.
+* [Deprecated]: `lv_is_frontend` filter has been deprecated. You can use filter `lv_should_load_shortcode` to control whether the shortcode should be loaded in the current request.
+* [Removed]: `set_file_identifier` callback from the `init` action has been removed.
 
  = 3.2.0 =
 * Tested up to WP: 6.9
 * [Security Fix]: XSS fix. Please update now.
-
 
  = 3.1.0 =
 * Tested up to WP: 6.8.1

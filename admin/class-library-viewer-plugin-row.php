@@ -1,6 +1,6 @@
 <?php
 
-class Library_Viewer_Plugin_Page {
+class Library_Viewer_Plugin_Row {
 
 	/**
 	 * Library_Viewer_Plugin_Page constructor.
@@ -12,8 +12,6 @@ class Library_Viewer_Plugin_Page {
 	 */
 	public function __construct()
 	{
-		if ( 'plugins.php' != $GLOBALS['pagenow'] ) return;
-
 		add_filter('plugin_action_links_' . plugin_basename(LIBRARY_VIEWER_FILE_ABSPATH), array($this, 'add_plugin_action_link'));
 		add_filter('plugin_row_meta', array($this, 'filter__plugin_row_meta__view_documentation'), 15,2);
 	}

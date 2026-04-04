@@ -1,0 +1,58 @@
+﻿.library-viewer--breadcrumb{
+    border-top: ridge;
+    border-bottom: ridge;
+    padding: 8px 0 8px 0;
+    margin-bottom: 17px;
+}
+.library-viewer--breadcrumb-item{
+    color:blue;
+}
+.library-viewer--breadcrumb-item:hover,
+.library-viewer--breadcrumb-item:visited{
+    text-decoration: underline;
+    color: blue;
+}
+.library-viewer--breadcrumb-item:last-of-type{
+    font-weight: bold;
+}
+.library-viewer--breadcrumb_delimiter{
+    margin: 0 8px;
+}
+
+
+.library-viewer--folder__icon{
+    width: 30px;
+    height: 26px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.library-viewer--folder h3 {
+    margin-top: 0;
+    display: inline-block;
+}
+
+
+.library-viewer-need-to-buy-access-wrapper{
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+
+.library-viewer--error-message{
+    padding: 1em 1.618em;
+    margin-bottom: 30px;
+    background-color: #e2401c;
+    color: #fff;
+    border-left: 0.6180469716em solid rgba(0, 0, 0, 0.15);
+    letter-spacing: 0.3px;
+}
+
+.library-viewer--success-message{
+    padding: 1em 1.618em;
+    margin-bottom: 30px;
+    background-color: #0f834d;
+    color: #fff;
+    border-left: 0.6180469716em solid rgba(0, 0, 0, 0.15);
+    letter-spacing: 0.3px;
+}

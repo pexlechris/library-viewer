@@ -222,6 +222,7 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
 * [Enhancement]: Renamed class `Library_Viewer_Plugin_Page` to `Library_Viewer_Plugin_Row` to better reflect that it handles the plugin row (action links & meta links) in the Plugins page.
 * [Enhancement]: Updated require path to 'class-library-viewer-plugin-row.php' and instantiation to `new Library_Viewer_Plugin_Row();`
 * [Enhancement]: Not save in option `library-viewer-shortcodes` rest api URLs (/wp-json/)
+* [Bug Fix]: Prevent mobile browsers from appending .html extension by adding fallback Content-Type header for downloads.
 * [Deprecated]: Method `Library_Viewer_Init::is_frontend()` method has been deprecated. Use `Library_Viewer_Init::should_load_shortcode()` instead, after init with priority 10.
 * [Deprecated]: `lv_is_frontend` filter has been deprecated. You can use filter `lv_should_load_shortcode` to control whether the shortcode should be loaded in the current request.
 * [Removed]: `set_file_identifier` callback from the `init` action has been removed.

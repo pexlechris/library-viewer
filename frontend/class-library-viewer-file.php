@@ -475,6 +475,7 @@ class Library_Viewer_File extends Library_Viewer_File_Alias
 
 		if ( false === $mime_type_found ) {// download
 			$this->file_status['headers'][] = 'Content-Description: File Transfer';
+			$this->file_status['headers'][] = 'Content-Type: application/octet-stream'; // Binary data — download without questions
 			$this->file_status['headers'][] = 'Content-Disposition: attachment; filename="' . $file_name . '"';
 
 		} else {// open file

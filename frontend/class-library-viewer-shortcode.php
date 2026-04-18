@@ -170,16 +170,11 @@ class Library_Viewer_Shortcode {
 	 * @since 2.0.0
 	 * @since 3.0.0 code moved to init method.
 	 */
-	public function __construct( $file_identifier = false, $register_hooks = true )
+	public function __construct( $register_hooks = true )
 	{
 		$this->class_names = array_reverse(array_values(array_merge([get_class($this)], class_parents($this))));
 
-		$this->globals['file_identifier'] = $file_identifier !== false
-			? $file_identifier
-			/**
-			 * @ignore
-			 */
-			: apply_filters('lv_file_identifier', 'LV');
+		$this->globals['file_identifier'] = Library_Viewer_Init::get_file_identifier();
 
 		if($register_hooks){
 			add_filter('document_title_parts', [$this, 'maybe_alter_document_title']);
@@ -221,16 +216,16 @@ class Library_Viewer_Shortcode {
 		 * Use te following hook to prepend the document title also for 'my_post_type' post type:
 		 * add_filter('lv_prepend_document_title', function($prepend_string, $current_folder){
 		 * 		if( is_singular('my_post_type') ){
-		 * 			return $current_folder;
+		 * 			return $current_folder['folder_name'];
 		 * 		}
 		 *     return $prepend_string;
 		 * }, 10, 2);
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string $prepend_default_string Default value is the current folder name,
-		 * 										 if the library-viewer shortcode exists
-		 * 										 exactly once and only in a page. Otherwise, null.
+		 * @param string|null $prepend_default_string Default value is the current folder name,
+		 * 										 	  if the library-viewer shortcode exists
+		 * 										 	  exactly once and only in a page. Otherwise, null.
 		 * @param array $current_folder{
 		 * 		The folder array with its details.
 		 *
@@ -734,18 +729,42 @@ class Library_Viewer_Shortcode {
 		$this->globals['real_shortcode_page_link'] = $this->get_current_page_url();
 	}
 
+	/**
+	 * Get the current page URL to use as a prefix for file URLs.
+	 *
+	 * @param string $url_suffix Optional. Used for Library Viewer Pro.
+	 * @return string Current page URL.
+	 */
 	public function get_current_page_url($url_suffix = '')
 	{
-		$protocol = explode('://', site_url());
-		$protocol = $protocol[0];
-		$current_page_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-		$current_page_url = $this->rtrim($current_page_url, '/');
+		$home_url = home_url();
 
+		$protocol = explode('://', $home_url);
+		$protocol = $protocol[0];
+
+		$current_page_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+		$current_page_url = untrailingslashit($current_page_url);
 		$current_page_url = str_replace('+', '%2B', $current_page_url);
 		$current_page_url = urldecode($current_page_url);
 
+		// Supporting preview URLs and plain permalinks
+		$page_id = $_GET['page_id'] ?? $_GET['p'] ?? null;
+
+		if( $page_id && $current_page_url === untrailingslashit( $home_url ) ){
+			$current_page_url .= "/p/$page_id";
+		}
+
 		if($url_suffix){
 			$current_page_url = $current_page_url . $url_suffix;
+		}
+
+		// if is wp-admin URL
+		$admin_url = admin_url();
+		if( $this->globals['current_viewer'] === 'folder' && $this->ltrim($current_page_url, $admin_url) !== $current_page_url ){
+			$admin_url = untrailingslashit($admin_url);
+			$pagenow = $this->rtrim( $GLOBALS['pagenow'], '.php' );
+			$page = $_GET['page'] ?? '';
+			$current_page_url = untrailingslashit( $admin_url . '/' . $pagenow . '/' . $page );
 		}
 
 		return $current_page_url;
@@ -1251,12 +1270,14 @@ class Library_Viewer_Shortcode {
 
 		//Echo all the containing directories except...
 		//...all the FTP folders that have in their names the string "hidden-folder"
-		$all_folders = array_filter(glob( $real_path . '*' ), 'is_dir');
+		$all_folders = array_filter(glob( $abspath . $real_path . '*' ), 'is_dir');
 		natsort($all_folders); //natural sorting
 
 		$_all_folders = array();
 
-		foreach ($all_folders as $folder_real_link) {
+		foreach ($all_folders as $folder) {
+
+			$folder_real_link = $this->ltrim($folder, $abspath);
 
 			if ( $this->is_folder_hidden($folder_real_link) ) {
 				continue;
@@ -1425,12 +1446,14 @@ class Library_Viewer_Shortcode {
 
 		//All the files (pdf, jpg, png ,doc, php, ini etc. etc.)...
 		//...except these that have in their names the string "hidden-file" or they are .php or .ini files
-		$all_files = array_filter(glob( $real_path .'*'), 'is_file');
+		$all_files = array_filter(glob( $abspath . $real_path .'*'), 'is_file');
 		natsort($all_files); //natural sorting
 
 		$_all_files = array();
 
 		foreach ($all_files as $key => $file) {
+
+			$file = $this->ltrim($file, $abspath);
 
 			$file_name = $this->basename($file);
 			if ( $this->is_file_hidden($file_name) ) {
@@ -1816,7 +1839,7 @@ class Library_Viewer_Shortcode {
 		 * not allow user requesting to view a folder outside of that we have define.
 		 */
 		if ( $this->is_dir_accessible($dir) ) {
-			if ( '' != $real_path && !file_exists( $real_path ) ) {
+			if ( '' != $real_path && !file_exists( $abspath . $real_path ) ) {
 				$display_errors = library_viewer_error('folder_not_exists') . $this->get_go_back_button_html();
 			} elseif ( false !== strpos($real_path, '/..') ) {
 				$display_errors = library_viewer_error('no_access') . $this->get_go_back_button_html();
@@ -1954,6 +1977,15 @@ class Library_Viewer_Shortcode {
 	{
 		$current_page_url = $this->globals['current_page_url'];
 
+		/**
+		 * Prevent saving when the request originates from the REST API (URL starts with /wp-json).
+		 *
+		 * @since 3.3.0
+		 */
+		if ( strpos( $current_page_url, get_rest_url() ) === 0 ) {
+			return;
+		}
+
 		$library_viewer_shortcodes = get_option('library-viewer-shortcodes');
 		if ( !is_array($library_viewer_shortcodes) ) {
 			$library_viewer_shortcodes = array();
@@ -1961,7 +1993,30 @@ class Library_Viewer_Shortcode {
 
 		if ( !isset($library_viewer_shortcodes[$current_page_url]) || $library_viewer_shortcodes[$current_page_url] != $this->parameters ) {
 			$library_viewer_shortcodes[$current_page_url] = $this->parameters;
-			update_option('library-viewer-shortcodes', $library_viewer_shortcodes);
+
+			/**
+			 * Filter whether the 'library-viewer-shortcodes' option should be autoloaded.
+			 *
+			 * Since Library Viewer v3.3.0, the 'library-viewer-shortcodes' option is no longer
+			 * autoloaded by default. Use this filter to control autoload behavior. It is recommended
+			 * to autoload this option only if shortcodes are used on every page.
+			 *
+			 * TIP:
+			 * To autoload this option when shortcodes are used on every page, you can use:
+			 * add_filter('lv_autoload_shortcodes', '__return_true');
+			 *
+			 * @since 3.3.0
+			 *
+			 * @param bool|string $autoload Current autoload state. Default is false.
+			 *                              Can be:
+			 *                                - boolean true  (equivalent to 'yes' / 'on')
+			 *                                - boolean false (equivalent to 'no' / 'off')
+			 *                                - string 'auto', 'auto-on', 'auto-off'
+			 * @param array $shortcodes Array of all shortcodes stored in 'library-viewer-shortcodes'.
+			 */
+			$autoload = apply_filters('lv_autoload_shortcodes', false, $library_viewer_shortcodes);
+
+			update_option('library-viewer-shortcodes', $library_viewer_shortcodes, $autoload);
 		}
 	}
 
@@ -2189,7 +2244,6 @@ class Library_Viewer_Shortcode {
 	protected function get_file_fake_link($file_real_link)
 	{
 		extract($this->globals);
-
 		$file_path = $this->get_encrypted_path($file_real_link);
 
 		/**

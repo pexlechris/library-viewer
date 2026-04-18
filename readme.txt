@@ -5,38 +5,52 @@ Plugin URI: https://www.pexlechris.dev/library-viewer
 Author: Pexle Chris
 Author URI: https://www.pexlechris.dev
 Tags: FTP, file manager, file list, download manager
-Version: 3.2.0
-Stable tag: 3.2.0
+Version: 3.3.0
+Stable tag: 3.3.0
 Requires at least: 3.0.0
-Tested up to: 6.9
+Tested up to: 6.8.1
 Requires PHP: 7.0
 Tested up to PHP: 8.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A File & Folder Viewer for FTP folders, enabling the display of library contents (folders & files) on the front-end.
+A File & Folder Viewer for FTP folders, enabling the display of library contents (folders & files) on the front-end and back-end.
 
 == Description ==
 
-Spoiler:
 [LIBRARY VIEWER FOR WOOCOMMERCE ADD-ON](https://www.pexlechris.dev/library-viewer/for-woocommerce/) has been released! Check it ;-)
 
-With Library Viewer, you can display the containing files and the containing folders of a "specific folder" of your (FTP) server to your users in the front-end.
+With Library Viewer, you can display the containing files and the containing folders of a "specific folder" of your (FTP) server to your users.
+
+Whether you want to share documents with your customers on the front-end or manage them internally from the WordPress dashboard, Library Viewer provides a seamless and secure experience.
 
 The **significant difference** from other similar plugins is that:
 1. You can allow users to **view that the files exist**, but **cannot open them if they are not logged in** (or if they are not administrators, or authors etc...).
-2. You can allow users to view files in a **custom viewer or redirect them** through a RESTful web service of your choice(examples exists below).
+2. You can allow users to view files in a **custom viewer or redirect them** through a RESTful web service of your choice (examples exist below).
+3. **Admin Integration:** Administrators can now browse the library directly from the WordPress back-end, making file management easier than ever.
 
 [DEMO](https://www.pexlechris.dev/library-viewer/demo-wp)
 
-For this plugin (the free version), the "specific folder" is the folder
-"library" of your httpdocs(yoursite.com/library).
-If you want to display other folder (and its files) that isn't contained in yoursite.com/library , you need to use the path parameter of [Library Viewer Pro](https://www.pexlechris.dev/library-viewer/pro-wp).
+For this plugin (the free version), the "specific folder" is the folder "library" of your httpdocs (yoursite.com/library).
+If you want to display other folder (and its files) that isn't contained in yoursite.com/library, you need to use the path parameter of [Library Viewer Pro](https://www.pexlechris.dev/library-viewer/pro-wp).
 
-This plugin adds the [library-viewer] shortcode in your WordPress site!
-So the only thing that you must do to display the folders and files in the front-end is to add this shortcode in a post, page, widget etc.
+This plugin adds the [library-viewer] shortcode to your WordPress site. Simply add this shortcode to any post, page, or widget to display your library to your users.
 
-The [library-viewer] shortcode get **optional parameters** that extend the functionality of plugin:
+== Admin Library Viewer ==
+
+The Admin Library Viewer is a powerful feature introduced in version 3.3.0 that brings the functionality of the library directly into your WordPress dashboard. It is designed for site owners and administrators who need a quick and easy way to browse their library without navigating to the front-end.
+
+**Key Features of the Admin Page:**
+*   **Centralized Browsing:** View all files and folders in your "library" folder directly from the **Media > Library Viewer** menu.
+*   **Customizable Access:** You can define exactly which user roles or capabilities (e.g., editors, custom roles) have permission to view this admin page.
+*   **Flexible Display:** The admin page uses the same powerful engine as the shortcode. You can even customize the display settings specifically for the admin area using the built-in settings tab.
+*   **Easy Navigation:** Includes a dedicated "Settings" tab where you can change the page title and manage access permissions without touching any code.
+
+**How to Use:**
+1.  Go to your WordPress Dashboard.
+2.  Navigate to **Media > Library Viewer**.
+3.  Use the **Library** tab to browse your files.
+4.  Switch to the **Settings** tab to customize the title or restrict access to specific roles.
 
 == Parameters Documentation ==
 &nbsp;&nbsp;[PARAMETERS DOCUMENTATION AND USE CASES](https://www.pexlechris.dev/library-viewer/parameters-wp)
@@ -146,7 +160,6 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
 
 
  = Library Viewer does not work properly and/or I get some ERRORS. Why? =
- - Check your permalinks PLAIN PERMALINKS ARE NOT SUPPORTED. Please change your permalink from /wp-admin/options-permalink.php to something else.
  - Check the folders' and files' read permissions (safe choice is to use 644)
  - If you use the plugin **Remove Uppercase Ascents** and a CSS code like *.library-viewer--folder{text-transform: uppercase;}* maybe this cause the problem. The solution in this case is to use instead this CSS code: .library-viewer--folder h3 a{text-transform: uppercase;}
 - Check if the file or folder has special characters in its name. Some are not supported as names of folders and files such as %.
@@ -210,11 +223,28 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
 
 
 == Changelog ==
+ = 3.3.0 =
+* [New Feature]: **Admin Library Viewer!** Display and manage your library directly from the WordPress backend (Media > Library Viewer).
+* [New]: **Plain permalinks & preview pages are now supported** in the library-viewer shortcode!
+* [New]: Autoload behavior can now be controlled via the filter `lv_autoload_shortcodes`. It is recommended to autoload this option **only if shortcodes are used on every page**.
+* [New]: New filter introduced: `lv_should_load_shortcode` to control whether the shortcode should be loaded in the current request.
+* [New]: Added public static method `Library_Viewer_Init::get_file_identifier()` to retrieve the LV file identifier.
+* [New]: Added public static method `Library_Viewer_Init::should_load_file_viewer()` to determine if the file viewer should be loaded for the current request.
+* [New]: New filter introduced: `lv_should_load_file_viewer` to control whether the Library Viewer's file viewer should be loaded.
+* [Enhancement]: `load_plugin_textdomain` is now hooked to `init` with priority 1 instead of 10.
+* [Enhancement]: Code refactor of class `Library_Viewer_Init`.
+* [Enhancement]: Option `library-viewer-shortcodes` **is no longer autoloaded by default**.
+* [Enhancement]: Renamed class `Library_Viewer_Plugin_Page` to `Library_Viewer_Plugin_Row` to better reflect that it handles the plugin row (action links & meta links) in the Plugins page.
+* [Enhancement]: Updated require path to 'class-library-viewer-plugin-row.php' and instantiation to `new Library_Viewer_Plugin_Row();`
+* [Enhancement]: Not save in option `library-viewer-shortcodes` rest api URLs (/wp-json/)
+* [Bug Fix]: Prevent mobile browsers from appending .html extension by adding fallback Content-Type header for downloads.
+* [Deprecated]: Method `Library_Viewer_Init::is_frontend()` method has been deprecated. Use `Library_Viewer_Init::should_load_shortcode()` instead, after init with priority 10.
+* [Deprecated]: `lv_is_frontend` filter has been deprecated. You can use filter `lv_should_load_shortcode` to control whether the shortcode should be loaded in the current request.
+* [Removed]: `set_file_identifier` callback from the `init` action has been removed.
 
  = 3.2.0 =
 * Tested up to WP: 6.9
 * [Security Fix]: XSS fix. Please update now.
-
 
  = 3.1.0 =
 * Tested up to WP: 6.8.1

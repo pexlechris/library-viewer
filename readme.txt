@@ -18,7 +18,6 @@ A File & Folder Viewer for FTP folders, enabling the display of library contents
 
 == Description ==
 
-Spoiler:
 [LIBRARY VIEWER FOR WOOCOMMERCE ADD-ON](https://www.pexlechris.dev/library-viewer/for-woocommerce/) has been released! Check it ;-)
 
 With Library Viewer, you can display the containing files and the containing folders of a "specific folder" of your (FTP) server to your users.

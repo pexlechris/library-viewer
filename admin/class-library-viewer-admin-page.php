@@ -132,13 +132,13 @@ class Library_Viewer_Admin_Page {
     public function render_library_access_caps_field()
     {
         $placeholder = implode(', ', $this->manage_caps) . ', my_custom_cap, etc...';
-        $description = sprintf( __('Default is %s', 'library-viewer'), implode(', ', $this->manage_caps) );
+        $description = sprintf( __('Default: %s.', 'library-viewer'), implode(', ', $this->manage_caps) );
         echo $this->get_field_html('library_access_caps', $placeholder, $description);
     }
     public function render_shortcode_field()
     {
         $placeholder = '[library-viewer'."\n".'my_doc_viewer="default"]';
-        $description = sprintf( __('Default is %s', 'library-viewer'), '[library-viewer]' );
+        $description = sprintf( __( __('Default: %s. Paste the shortcode you want to use, exactly as you would in frontend pages.', 'library-viewer'), 'library-viewer'), '[library-viewer]' );
         echo $this->get_field_html('shortcode', $placeholder, $description, 'textarea');
     }
 

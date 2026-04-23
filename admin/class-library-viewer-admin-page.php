@@ -88,7 +88,7 @@ class Library_Viewer_Admin_Page {
 
         add_settings_field(
             'lv_library_access_caps',
-            __('Who can access the library (roles or capabilities, comma-separated)', 'library-viewer'),
+            __('Who can access the library tab (roles or capabilities, comma-separated)', 'library-viewer'),
             [$this, 'render_library_access_caps_field'],
             $this->menu_slug,
             $this->menu_slug . '_section'
@@ -206,6 +206,7 @@ class Library_Viewer_Admin_Page {
 
     protected function maybe_render_tab_library()
     {
+        // TODO: Change method to plain current_user_can_access
         if( ! $this->current_user_can_access_library() ){
             return;
         }
@@ -271,6 +272,7 @@ class Library_Viewer_Admin_Page {
         return $this->get_title();
     }
 
+    // TODO: Remove settings caps from this
     protected function get_library_access_caps(): array{
         $caps = $this->get_settings_access_caps();
 

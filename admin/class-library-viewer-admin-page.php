@@ -192,7 +192,7 @@ class Library_Viewer_Admin_Page {
         $parent_slug = $this->get_parent_menu_slug();
         $slug = $this->get_menu_slug();
         ?>
-        <div class="library-viewer-admin-page__nav" style="margin-bottom: 20px;">
+        <div class="library-viewer-admin-page__nav" style="margin: 10px 0 20px 0;">
             <a href="<?php echo esc_url( admin_url("$parent_slug?page=$slug") ); ?>" style="text-decoration: none; <?php if ($curr_tab === 'library') echo $active_styles; ?>">
                 <?php _e('Library', 'library-viewer'); ?></a>
 

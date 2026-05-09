@@ -351,24 +351,23 @@ class Library_Viewer_Shortcode {
 			}
 		}
 
+		$filter_allowed_parameters = $this->filter('filter_allowed_parameters', []);
+
+
 		/**
 		 * If method exists for each parameter, initialized.
 		 * If not, is added to `invalid_parameters` property.
 		 */
-		foreach ($this->parameters as $parameter_name => $v) {
-			$method = 'init_parameter_' . $parameter_name;
-			if ( method_exists($this, $method) ) {
-				$this->$method($this->parameters);
-			} else {
-				$this->invalid_parameters[] = $parameter_name;
+		foreach ($this->parameters as $parameter => $v) {
+			$method = 'init_parameter_' . $parameter;
+			if ( !method_exists($this, $method) ) {
+				$this->invalid_parameters[] = $parameter;
+				continue;
 			}
-		}
 
-		$filter_allowed_parameters = $this->filter('filter_allowed_parameters', []);
+			$this->$method( $this->parameters ); // call init method
 
-		foreach ($filter_allowed_parameters as $parameter) {
-			if ( isset($this->globals[$parameter]) ) {
-
+			if ( isset($this->globals[$parameter]) && in_array( $parameter, $filter_allowed_parameters ) ) {
 				/**
 				 * Filter the $parameter (the parameters as globals 'have_file_access' etc...).
 				 *
@@ -395,31 +394,33 @@ class Library_Viewer_Shortcode {
 				 */
 				$this->globals[$parameter] = apply_filters("lv_filter_global_{$parameter}", $this->globals[$parameter], $this->globals);
 			}
+
 		}
+
+
+		$filter_allowed_globals = $this->filter('filter_allowed_globals', []);
+
 
 		/**
 		 * globals assigned as null, will be initialized with a value by method init_global_{$_global}
 		 */
-		foreach ($this->globals as $k => $v) {
-			if ( is_null($v) ) {
-				$method = 'init_global_' . $k;
-				if ( method_exists($this, $method) ) {
-					$this->$method();
-				} else {
-					wp_die(library_viewer_error(
-						'non_registered_method_in_class',
-						$method,
-						get_class($this)
-					));
-				}
+		foreach ($this->globals as $global => $global_value) {
+			if ( !is_null($global_value) ) {
+				continue;
 			}
-		}
 
-		$filter_allowed_globals = $this->filter('filter_allowed_globals', []);
+			$method = 'init_global_' . $global;
 
-		foreach ($filter_allowed_globals as $global) {
-			if ( isset($this->globals[$global]) ) {
+			if ( !method_exists($this, $method) ) {
+				wp_die(library_viewer_error(
+					'non_registered_method_in_class',
+					$method,
+					get_class($this)
+				));
+			}
 
+			$this->$method(); // call init method
+			if ( isset( $this->globals[$global] ) && in_array( $global, $filter_allowed_globals ) ) {
 				/**
 				 * Filter the $global (the parameters as globals 'have_file_access' etc...).
 				 *

@@ -120,7 +120,9 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
 == Frequently Asked Questions ==
 
  = Can I display a folder that is outside of my WordPress root directory? =
- Yes, with **[Library Viewer Pro](https://www.pexlechris.dev/library-viewer/pro-wp)** you can display any folder on the same server, even if it is outside your WordPress installation directory (e.g., above the public_html folder), as long as the server's PHP has access to it. This is a great way to keep your files secure and separate from your website's public files!
+ Yes, with **[Library Viewer Pro](https://www.pexlechris.dev/library-viewer/pro-wp)** you can display any folder on the same server, even if it is outside your WordPress installation directory (e.g., above the public_html folder), as long as the server's PHP has access to it.
+ This can be achieved using the `lv_filter_global_abspath` filter to change the default ABSPATH to the root path of the folder you want to display.
+ For more detailed instructions and code examples on how to set this up, please feel free to ask in the **[support forum](https://wordpress.org/support/plugin/library-viewer/)**. As you can see, I usually respond within a few hours to help you out!
 
 
  = Can I forbid the direct access in the files of the library? I want only via library files can be accessible. =

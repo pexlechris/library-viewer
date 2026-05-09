@@ -158,6 +158,9 @@ class Library_Viewer_File extends Library_Viewer_File_Alias
 		}
 	}
 
+	/**
+	 * Used to override method Library_Viewer_Shortcode::Library_Viewer_Shortcode__init_globals_before_init_parameters()
+	 */
 	protected function Library_Viewer_Shortcode__init_globals_before_init_parameters()
 	{
 		$this->globals['current_viewer'] = 'file';
@@ -387,7 +390,7 @@ class Library_Viewer_File extends Library_Viewer_File_Alias
 		{
 			$action = 'file_not_allowed';
 		}
-		elseif( !is_file($file_real_link) )
+		elseif( !is_file( $file_abs_path ) )
 		{
 			$action = 'file_not_exists';
 		}

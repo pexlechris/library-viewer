@@ -453,11 +453,11 @@ class Library_Viewer_Init {
          * Filter the capabilities required to access the default Library Viewer admin page under Media.
          *
          * By default, this admin page is registered under "Media" (upload.php) with 'manage_options' capability.
-         * Developers can use this filter to change which capabilities are required to access it.
+         * Developers can use this filter to change which capabilities/roles are required to access it.
          *
          * @since 3.3.0
          *
-         * @param array $manage_caps List of capabilities required to manage this admin page.
+         * @param array $manage_caps List of capabilities/roles required to manage this admin page.
          */
         $manage_caps = apply_filters('lv_default_admin_page_manage_caps', ['manage_options']);
 

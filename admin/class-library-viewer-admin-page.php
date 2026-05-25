@@ -28,7 +28,9 @@ class Library_Viewer_Admin_Page {
         $this->default_title    = $title ?: __('Library Viewer', 'library-viewer');
         $this->manage_caps      = $manage_caps ?: ['manage_options'];
 
-        $this->option_name = 'lv_admin_page_' . str_replace('.php', '_', $this->parent_menu_slug) . str_replace('-', '_', $menu_slug) . '_options';
+        list($level_1, $level_2) = $this->get_levels(true);
+
+        $this->option_name = "lv_admin_page__{$level_1}__{$level_2}__options";
 
         add_filter('lv_should_load_shortcode', [$this, 'allow_shortcode_load_at_this_page'], 20);
         add_action('admin_menu', [$this, 'register_admin_page']);
@@ -40,7 +42,9 @@ class Library_Viewer_Admin_Page {
         global $pagenow;
         $page = $_GET['page'] ?? '';
 
-        if( $pagenow === $this->parent_menu_slug && $page === $this->menu_slug ){
+        list($level_1, $level_2) = $this->get_levels();
+
+        if( in_array($pagenow, ['admin.php', $level_1]) && $page === $level_2 ){
             return true;
         }
 
@@ -189,16 +193,18 @@ class Library_Viewer_Admin_Page {
         }
 
         $active_styles = 'color: black; font-weight: 500;';
-        $parent_slug = $this->get_parent_menu_slug();
-        $slug = $this->get_menu_slug();
+
+        global $pagenow;
+        list($level_1, $level_2) = $this->get_levels();
+
         ?>
         <div class="library-viewer-admin-page__nav" style="margin: 10px 0 20px 0;">
-            <a href="<?php echo esc_url( admin_url("$parent_slug?page=$slug") ); ?>" style="text-decoration: none; <?php if ($curr_tab === 'library') echo $active_styles; ?>">
+            <a href="<?php echo esc_url( admin_url("$pagenow?page=$level_2") ); ?>" style="text-decoration: none; <?php if ($curr_tab === 'library') echo $active_styles; ?>">
                 <?php _e('Library', 'library-viewer'); ?></a>
 
             <span class="library-viewer-admin-page__separator"> | </span>
 
-            <a href="<?php echo esc_url( admin_url("$parent_slug?page=$slug&tab=settings") ); ?>" style="text-decoration: none; <?php if ($curr_tab === 'settings') echo $active_styles; ?>">
+            <a href="<?php echo esc_url( admin_url("$pagenow?page=$level_2&tab=settings") ); ?>" style="text-decoration: none; <?php if ($curr_tab === 'settings') echo $active_styles; ?>">
                 <?php _e('Settings', 'library-viewer'); ?></a>
         </div>
         <?php
@@ -270,6 +276,25 @@ class Library_Viewer_Admin_Page {
 
     protected function get_menu_title(){
         return $this->get_title();
+    }
+
+    protected function get_levels($normalized = false)
+    {
+        $level_1 = $this->parent_menu_slug;
+        $level_2 = $this->menu_slug;
+
+        if( strpos( $level_1, '?page=' ) !== false ) {
+            $expl = explode( '?page=', $level_1 );
+            $level_1 = $expl[0];
+            $level_2 = $expl[1];
+        }
+
+        if($normalized) {
+            $level_1 = str_replace('.php', '_php', $level_1);
+            $level_2 = str_replace('-', '_', $level_2);
+        }
+
+        return [$level_1, $level_2];
     }
 
     // TODO: Remove settings caps from this

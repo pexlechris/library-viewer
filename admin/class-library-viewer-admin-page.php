@@ -168,7 +168,7 @@ class Library_Viewer_Admin_Page {
         $current_tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'library';
 
 		?>
-		<div class="wrap library-viewer-admin-page">
+		<div class="wrap library-viewer-admin-page" data-option-name="<?php echo $this->option_name; ?>">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
             <?php
             $this->render_navigation($current_tab);

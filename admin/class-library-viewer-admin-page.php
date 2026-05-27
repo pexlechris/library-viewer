@@ -5,6 +5,7 @@ class Library_Viewer_Admin_Page {
     protected string $parent_menu_slug;
     protected string $menu_slug;
     protected array $manage_caps;
+    protected $submenu_position; // numeric
     protected string $default_title;
     protected string $option_name;
 
@@ -21,12 +22,13 @@ class Library_Viewer_Admin_Page {
 	 *
 	 * @since 3.3.0
 	 */
-	public function __construct($parent_menu_slug, $menu_slug, $title = null, $manage_caps = null)
+	public function __construct($parent_menu_slug, $menu_slug, $title = null, $manage_caps = null, $submenu_position = null)
 	{
         $this->parent_menu_slug = $parent_menu_slug;
         $this->menu_slug        = $menu_slug;
         $this->default_title    = $title ?: __('Library Viewer', 'library-viewer');
         $this->manage_caps      = $manage_caps ?: ['manage_options'];
+        $this->submenu_position = $submenu_position;
 
         list($level_1, $level_2) = $this->get_levels(true);
 
@@ -60,6 +62,7 @@ class Library_Viewer_Admin_Page {
             $this->current_user_can_access() ? 'read' : 'do_not_allow',
             $this->get_menu_slug(),
             [$this, 'render_admin_page_contents'],
+            $this->submenu_position
         );
 
 	}

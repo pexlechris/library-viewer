@@ -130,7 +130,9 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
 1. library folder must be located in the root of your FTP server
 2. Not all files and folders are displaying in the front-end Library Viewer because of their special names (hidden-folder, hidden-file, .php etc.)
 3. The string-value of the $text_at_beginning variable is displayed between the breadcrumb and the folders, the string-value of the $text_at_end variable is displayed below the folders & files.
-4. With Library Viewer File Manager Add-On, you can give the ability to some of your users to manage the library from the front-end.
+4. The settings of the default Library Viewer admin page
+5. The displayed library according to the settings from the previous screenshot.
+6. With Library Viewer File Manager Add-On, you can give the ability to some of your users to manage the library from the front-end.
 
 == Frequently Asked Questions ==
 

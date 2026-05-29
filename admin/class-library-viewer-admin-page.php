@@ -2,14 +2,14 @@
 
 class Library_Viewer_Admin_Page {
 
-    protected string $parent_menu_slug;
-    protected string $menu_slug;
-    protected array $manage_caps;
+    protected $parent_menu_slug;
+    protected $menu_slug;
+    protected $manage_caps;
     protected $submenu_position; // numeric
-    protected string $default_title;
-    protected string $option_name;
+    protected $default_title;
+    protected $option_name;
 
-    protected array $sanitizers = [
+    protected $sanitizers = [
         'page_title'            => 'wp_kses_post',
         'library_access_caps'   => 'sanitize_text_field',
         'shortcode'             => 'sanitize_textarea_field',
@@ -301,7 +301,7 @@ class Library_Viewer_Admin_Page {
     }
 
     // TODO: Remove settings caps from this
-    protected function get_library_access_caps(): array{
+    protected function get_library_access_caps(){
         $caps = $this->get_settings_access_caps();
 
         $library_access_saved_caps = $this->get_option('library_access_caps');
@@ -314,28 +314,28 @@ class Library_Viewer_Admin_Page {
         return $caps;
     }
 
-    protected function get_settings_access_caps(): array{
+    protected function get_settings_access_caps(){
         return $this->manage_caps;
     }
 
 
 
-    protected function current_user_can_access(): bool
+    protected function current_user_can_access()
     {
         return $this->current_user_can_access_library() || $this->current_user_can_access_settings();
     }
 
-    protected function current_user_can_access_library(): bool
+    protected function current_user_can_access_library()
     {
         return $this->current_user_has_any_cap( $this->get_library_access_caps() );
     }
 
-    protected function current_user_can_access_settings(): bool
+    protected function current_user_can_access_settings()
     {
         return $this->current_user_has_any_cap( $this->get_settings_access_caps() );
     }
 
-    protected function current_user_has_any_cap( array $caps ): bool
+    protected function current_user_has_any_cap( $caps )
     {
         foreach ( $caps as $cap ) {
             if ( current_user_can( $cap ) ) {

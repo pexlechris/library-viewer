@@ -11,7 +11,7 @@
  * Text Domain: library-viewer
  * Domain Path: /languages
  * Tested up to: 6.8.1
- * Requires PHP: 7.4
+ * Requires PHP: 7.0
  * Tested up to PHP: 8.2
  * License: GPLv2
  */

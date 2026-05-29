@@ -9,7 +9,7 @@ Version: 3.3.0
 Stable tag: 3.3.0
 Requires at least: 3.0.0
 Tested up to: 6.8.1
-Requires PHP: 7.4
+Requires PHP: 7.0
 Tested up to PHP: 8.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html

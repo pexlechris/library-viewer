@@ -89,16 +89,11 @@ class Library_Viewer_File extends Library_Viewer_File_Alias
 	 *
 	 * @since 3.0.0
 	 */
-	public function __construct( $file_identifier = false, $register_hooks = true )
+	public function __construct( $register_hooks = true )
 	{
 		$this->class_names = array_reverse(array_values(array_merge([get_class($this)], class_parents($this))));
 
-		$this->globals['file_identifier'] = $file_identifier !== false
-			? $file_identifier
-			/**
-			 * @ignore
-			 */
-			: apply_filters('lv_file_identifier', 'LV');
+		$this->globals['file_identifier'] = Library_Viewer_Init::get_file_identifier();
 
 		if($register_hooks){
 			add_action('wp_loaded', [$this, 'file_viewer_action']);
@@ -163,6 +158,9 @@ class Library_Viewer_File extends Library_Viewer_File_Alias
 		}
 	}
 
+	/**
+	 * Used to override method Library_Viewer_Shortcode::Library_Viewer_Shortcode__init_globals_before_init_parameters()
+	 */
 	protected function Library_Viewer_Shortcode__init_globals_before_init_parameters()
 	{
 		$this->globals['current_viewer'] = 'file';
@@ -392,7 +390,7 @@ class Library_Viewer_File extends Library_Viewer_File_Alias
 		{
 			$action = 'file_not_allowed';
 		}
-		elseif( !is_file($file_real_link) )
+		elseif( !is_file( $file_abs_path ) )
 		{
 			$action = 'file_not_exists';
 		}
@@ -480,6 +478,7 @@ class Library_Viewer_File extends Library_Viewer_File_Alias
 
 		if ( false === $mime_type_found ) {// download
 			$this->file_status['headers'][] = 'Content-Description: File Transfer';
+			$this->file_status['headers'][] = 'Content-Type: application/octet-stream'; // Binary data — download without questions
 			$this->file_status['headers'][] = 'Content-Disposition: attachment; filename="' . $file_name . '"';
 
 		} else {// open file

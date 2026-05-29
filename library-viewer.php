@@ -2,17 +2,17 @@
 /**
  * Plugin Name: Library Viewer
  * Description: This is a File & Folder Viewer of FTP folder: yoursite.com/library. So using the shortcode [library-viewer], you can print the containing folders & files of your library on front-end 
- * Version: 3.2.0
- * Stable tag: 3.2.0
+ * Version: 3.3.0
+ * Stable tag: 3.3.0
  * Plugin URI: https://www.pexlechris.dev/library-viewer
  * Author: Pexle Chris
  * Author URI: https://www.pexlechris.dev
  * Contributors: pexlechris
  * Text Domain: library-viewer
  * Domain Path: /languages
- * Tested up to: 6.9
- * Requires PHP: 7.0
- * Tested up to PHP: 8.2
+ * Tested up to: 7.0
+ * Requires PHP: 7.4
+ * Tested up to PHP: 8.3
  * License: GPLv2
  */
 
@@ -22,7 +22,7 @@
  * @since 2.0.0
  * @var string
  */
-define('LIBRARY_VIEWER_VERSION', '3.2.0');
+define('LIBRARY_VIEWER_VERSION', '3.3.0');
 
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -117,7 +117,29 @@ define('LIBRARY_VIEWER_FOR_WOOCOMMERCE_VERSION_REQUIRED_FOR_LV', '1.0.0');
  */
 class Library_Viewer_Init {
 
-	/**
+    /**
+     * @since 3.0.0
+     * @since 3.3.0 Property is now static & private
+     *
+     * @var string
+     */
+    private static $file_identifier;
+
+    /**
+     * Property that knows if a shortcode should be loaded.
+     *
+     * @since 3.3.0
+     *
+     * @var bool
+     */
+    private static $should_load_shortcode;
+
+    /**
+     * @var bool
+     */
+    private static $should_load_file_viewer;
+
+    /**
      * @since 3.0.0
      *
 	 * @var array
@@ -130,13 +152,6 @@ class Library_Viewer_Init {
 	 * @var array
 	 */
 	private $file_viewer_class_names;
-
-	/**
-	 * @since 3.0.0
-	 *
-	 * @var array
-	 */
-	private $file_identifier;
 
 	/**
 	 * @since 3.0.0
@@ -154,66 +169,66 @@ class Library_Viewer_Init {
 	 */
 	public function __construct()
 	{
-		add_action('init', [$this, 'load_plugin_textdomain']);
+		add_action('init', [$this, 'load_plugin_textdomain'], 1); // @since 3.3.0: priority 10 -> 1
 
 		add_action('wp_loaded', [$this, 'custom_login_redirect_action']);
 
 
 		/**
-		 * Below 4 hooks loading only in frontend!
+		 * Below hooks loading only in frontend!
 		 *
 		 * @since 3.0.0
-		 */
-		add_action('init', [$this, 'set_file_identifier'], 100);
-        add_action('init', [$this, 'set_shortcode_class_names'], 100);
-        //add_action('init', [$this, 'set_file_viewer_class_names'], 100); // @since 3.0.4 commented out
+         * @since 3.0.4 callback set_file_viewer_class_names commented out
+         * @since 3.3.0 -> callback set_shortcode_class_names commented out
+         *                  -> All logic is executed by set_library_viewer_global_variable()
+         *                  -> Now, hooks are not loaded only in frontend, methods should_load_shortcode() & should_load_file_viewer()
+         *                     are responsible for the loading condition, controlled by hooks
+         */
+        //add_action('init', [$this, 'set_shortcode_class_names'], 100);
+        //add_action('init', [$this, 'set_file_viewer_class_names'], 100);
 		add_action('init', [$this, 'set_library_viewer_global_variable'], 100);
 
 
 		add_shortcode('library-viewer', [$this, 'register_shortcode']);
 
 		/**
-		 * @sine 3.0.0 These classes loading in frontend and backend
+		 * @since 3.0.0 These classes loading in frontend and backend
 		 */
 		add_filter('lv_shortcode_class_names', [$this, 'filter_lv_shortcode_class_names'], 5);
 		add_filter('lv_file_viewer_class_names', [$this, 'filter_lv_file_viewer_class_names'], 5);
 
 
-        require_once LIBRARY_VIEWER_DIR_ABSPATH . 'admin/class-library-viewer-plugin-page.php';
-        new Library_Viewer_Plugin_Page();
+        require_once LIBRARY_VIEWER_DIR_ABSPATH . 'admin/class-library-viewer-plugin-row.php';
+        new Library_Viewer_Plugin_Row();
 
-        require_once LIBRARY_VIEWER_DIR_ABSPATH . 'admin/class-library-viewer-admin.php';
-        new Library_Viewer_Admin();
-	}
+        require_once LIBRARY_VIEWER_DIR_ABSPATH . 'admin/class-library-viewer-admin-notices.php';
+        new Library_Viewer_Admin_Notices();
 
-    public function set_file_identifier()
-	{
-		if( !$this->is_frontend('set_file_identifier') ) return;
+        require_once LIBRARY_VIEWER_DIR_ABSPATH . 'admin/class-library-viewer-admin-page.php';
 
-		/**
-		 * Library Viewer file identifier filter.
-		 *
-		 * If file identifier is found in REQUEST_URI, the plugin readfile and exits the code.
-		 * So with this filter, we can change this string to this of our choice.
-		 * BE CAREFUL!! If this string will be found in a URL of your website, the php execution will stop here.
-		 *
-		 * @param string $file_identifier Library Viewer file identifier keyword. Default is `LV`.
-		 * @since 2.0.0
-         * @since 3.0.0 Called at `init` action, and its value cannot be changed.
-		 */
-		$file_identifier = apply_filters('lv_file_identifier', 'LV');
-
-		$this->file_identifier = $file_identifier;
-	}
+        /**
+         * Register the Library Viewer media admin page.
+         *
+         * IMPORTANT: If you want to hook another admin page instead of this one,
+         * you should do it on the `init` hook with priority between 2 and 5.
+         *
+         * You can also unhook this callback like this:
+         *
+         * add_action('init', function () {
+         *     remove_action('init', ['Library_Viewer_Init', 'register_library_viewer_media_page'], 5);
+         * }, 2);
+         */
+        add_action('init', [__CLASS__, 'register_library_viewer_media_page'], 5);
+    }
 
 	/**
+     * @used by self::set_library_viewer_global_variable()
+     *
 	 * @since 3.0.0
+     * @since 3.3.0 Is now private
 	 */
-	public function set_shortcode_class_names()
+    private function set_shortcode_class_names()
 	{
-        if( !$this->is_frontend('set_shortcode_class_names') ) return;
-
-
 		/**
 		 * level-1 class: Library_Viewer_Shortcode
 		 * 		registered in `frontend/class-library-viewer-shortcode.php` file
@@ -266,12 +281,13 @@ class Library_Viewer_Init {
 	}
 
 	/**
+     * @used by self::set_library_viewer_global_variable()
+     *
 	 * @since 3.0.0
-	 */
-	public function set_file_viewer_class_names()
+     * @since 3.3.0 Is now private
+     */
+    private function set_file_viewer_class_names()
 	{
-		if( !$this->is_frontend('set_file_viewer_class_names') ) return;
-
 		/**
 		 * level-1 class: Library_Viewer_Shortcode
 		 * 		registered in `frontend/class-library-viewer-shortcode.php` file
@@ -342,26 +358,26 @@ class Library_Viewer_Init {
 
     public function set_library_viewer_global_variable()
     {
-		if( !$this->is_frontend('set_library_viewer_global_variable') ) return;
-
 		global $library_viewer_object;
 
-		$request_uri = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
-
-		if ( false !== strpos( $request_uri, "/$this->file_identifier/" ) ) { // case: file viewer
+		if ( self::should_load_file_viewer() ) {
+            $this->set_shortcode_class_names();
             $this->set_file_viewer_class_names();
 			$library_viewer_class_name  = end($this->file_viewer_class_names);
-			$library_viewer_object      = new $library_viewer_class_name( $this->file_identifier );
+			$library_viewer_object      = new $library_viewer_class_name();
 
-		}else{ // case: shortcode
-			$library_viewer_class_name  = end($this->shortcode_class_names);
-			$library_viewer_object      = new $library_viewer_class_name( $this->file_identifier );
+		}elseif( self::should_load_shortcode() ){
+            $this->set_shortcode_class_names();
+            $library_viewer_class_name  = end($this->shortcode_class_names);
+			$library_viewer_object      = new $library_viewer_class_name();
         }
     }
 
 	public function register_shortcode($attrs)
 	{
-        if( !$this->is_frontend('register_shortcode') ) return '';
+        if( self::should_load_shortcode() === false ){
+            return '';
+        }
 
 		global $library_viewer_object;
 
@@ -375,7 +391,7 @@ class Library_Viewer_Init {
 
 		$class_name = end($this->shortcode_class_names);
 
-		$new_instance = new $class_name( $this->file_identifier, false );
+		$new_instance = new $class_name(false);
 		$html = $new_instance->shortcode_html_contents($attrs);
 
 		// in order previous object/instance be available while shortcode is executed
@@ -431,32 +447,172 @@ class Library_Viewer_Init {
 		}
 	}
 
+    public static function register_library_viewer_media_page(){
+
+        /**
+         * Filter the capabilities required to access the default Library Viewer admin page under Media.
+         *
+         * By default, this admin page is registered under "Media" (upload.php) with 'manage_options' capability.
+         * Developers can use this filter to change which capabilities/roles are required to access it.
+         *
+         * @since 3.3.0
+         *
+         * @param array $manage_caps List of capabilities/roles required to manage this admin page.
+         */
+        $manage_caps = apply_filters('lv_default_admin_page_manage_caps', ['manage_options']);
+
+        new Library_Viewer_Admin_Page(
+            'upload.php',
+            'library-viewer',
+            __('Library Viewer', 'library-viewer'),
+            $manage_caps
+        );
+    }
+
+    /**
+     * Get the Library Viewer file identifier.
+     *
+     * This identifier is used to detect special Library Viewer file requests
+     * inside the REQUEST_URI. When the identifier is found, the plugin will
+     * serve the file directly and stop further PHP execution.
+     *
+     * The value is retrieved through the `lv_file_identifier` filter and is
+     * cached after the first call.
+     *
+     * IMPORTANT: This method should be used after the `init` action with
+     * priority greater than 5.
+     *
+     * @since 3.3.0
+     *
+     * @return string|null The file identifier string.
+     */
+    public static function get_file_identifier()
+    {
+        if( self::$file_identifier === null ){
+
+            /**
+             * Library Viewer file identifier filter.
+             *
+             * If file identifier is found in REQUEST_URI, the plugin readfile and exits the code.
+             * So with this filter, we can change this string to this of our choice.
+             * BE CAREFUL!! If this string will be found in a URL of your website, the php execution will stop here.
+             *
+             * @param string $file_identifier Library Viewer file identifier keyword. Default is `LV`.
+             * @since 2.0.0
+             * @since 3.0.0 Called at `init` action, and its value cannot be changed.
+             */
+            $file_identifier = apply_filters('lv_file_identifier', 'LV');
+
+            self::$file_identifier = $file_identifier;
+        }
+
+        return self::$file_identifier;
+    }
+
+    /**
+     * Whether the Library Viewer's file viewer should be loaded.
+     *
+     * IMPORTANT: Do not call this method before the `init` action with priority 6.
+     * It should only be used after `init` has run with priority greater than 5.
+     *
+     * @since 3.3.0
+     *
+     * @return bool
+     */
+    public static function should_load_file_viewer()
+    {
+        if( self::$should_load_file_viewer === null ){
+
+            $request_uri = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+            $should_load = strpos( $request_uri,  '/' . self::get_file_identifier() . '/' ) !== false;
+
+            /**
+             * Filter whether the Library Viewer's file viewer should be loaded for the current request.
+             *
+             * This filter allows developers to override the automatic detection of the
+             * file viewer request. By default, the file viewer is loaded if the request URI
+             * contains the Library Viewer file identifier (see Library_Viewer_Init::get_file_identifier()).
+             *
+             * IMPORTANT: This filter is applied inside Library_Viewer_Init::should_load_file_viewer()
+             * and the result is cached after the first call.
+             *
+             * @since 3.3.0
+             *
+             * @param bool $should_load Indicates whether the plugin's file viewer  should be loaded.
+             *                          Defaults to true if request URI without the get parameters
+             *                          contains the Library_Viewer_Init::get_file_identifier().
+             *
+             */
+            $should_load = apply_filters('lv_should_load_file_viewer', $should_load);
+            self::$should_load_file_viewer = $should_load;
+        }
+
+        return self::$should_load_file_viewer;
+    }
+
+    /**
+     * Whether the shortcode should be loaded.
+     *
+     * IMPORTANT: Do not call this method before the `init` action with priority 6.
+     * It should only be used after `init` has run with priority greater than 5.
+     *
+     * @since 3.3.0
+     *
+     * @return bool
+     */
+    public static function should_load_shortcode()
+    {
+        if( self::$should_load_shortcode === null ){
+
+            global $pagenow;
+
+            if( $pagenow === 'wp-login.php' ){
+                $should_load = false;
+            }elseif( is_admin() ) {
+                $should_load = false;
+            }else{
+                $should_load = true;
+            }
+
+
+            $should_load = apply_filters_deprecated('lv_is_frontend', [$should_load, null], '3.3.0', 'lv_should_load_shortcode');
+
+            /**
+             * Filter whether the Library Viewer shortcode should be loaded for the current request.
+             *
+             * This filter allows developers to override the automatic detection of whether
+             * the shortcode should be loaded. By default, the shortcode is loaded only on
+             * frontend pages (not in admin or on wp-login.php).
+             *
+             * IMPORTANT: This filter is applied inside Library_Viewer_Init::should_load_shortcode()
+             * and the result is cached after the first call.
+             *
+             * @since 3.3.0
+             * @note This filter is the replacement for the deprecated `lv_is_frontend` filter.
+             *
+             * @param bool $should_load Indicates whether the shortcode should be loaded.
+             *                          Defaults to true on frontend pages, false on admin or login pages.
+             */
+            $should_load = apply_filters('lv_should_load_shortcode', $should_load);
+            self::$should_load_shortcode = $should_load;
+        }
+
+        return self::$should_load_shortcode;
+    }
+
 	/**
      * @since 3.0.2
+     * @since 3.3.0 deprecated
+     *
+     * @deprecated. Use Library_Viewer_Init::should_load_shortcode() instead.
      *
 	 * @param string|null $function_name
 	 * @return bool
 	 */
     public static function is_frontend( $function_name = null )
 	{
-		$is_frontend = !is_admin() && $GLOBALS['pagenow'] != 'wp-login.php';
-
-		/**
-		 * Filter if the current request is from a front-end page.
-         *
-         * Because the shortcode and its hooks are being loaded only in frontend.
-         *
-         * @since 3.0.0
-         *
-		 * @param bool $is_frontend Indicates whether it is the front-end.
-         *             Defaults to true when not on an admin page or the default WP login page.
-		 * @param string|null $function_name The context. The name of the function from which
-         *                    this method was called. Default is null.
-		 */
-        $is_frontend = apply_filters('lv_is_frontend', $is_frontend, $function_name);
-
-        return $is_frontend;
-	}
+        return self::should_load_shortcode();
+    }
 
 }
 
@@ -599,7 +755,7 @@ function library_viewer_error($case, $s = '', $s2 = '') {
 			$lv_pro_url = '<a target="_blank" href="' . LIBRARY_VIEWER_PRO_BUY_URL . '">Library Viewer Pro</a>';
 			$lv_fm_url = '<a target="_blank" href="' . LIBRARY_VIEWER_FILE_MANAGER_BUY_URL . '">Library Viewer File Manager Addon</a>';
 			$lv_pro_parameters = array('breadcrumb', 'shown_folders', 'hidden_folders', 'shown_files', 'hidden_files', 'waiting_seconds', 'url_suffix');
-			$lv_fm_parameters = array('delete_folder', 'delete_file', 'rename_folder', 'rename_file', 'create_folder', 'upload_file', 'unzip_file', 'download_folder', 'download_file');
+			$lv_fm_parameters = array('delete_folder', 'delete_file', 'rename_folder', 'rename_file', 'create_folder', 'upload_file', 'unzip_file', 'download_folder', 'download_file', 'add_folder_tags', 'add_file_tags');
 
 			if ( 'path' === $s ) {
 				$string = sprintf(

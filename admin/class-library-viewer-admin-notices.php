@@ -1,6 +1,6 @@
 <?php
 
-class Library_Viewer_Admin {
+class Library_Viewer_Admin_Notices {
 
 	private $version_deprecation = '3.0.0';
 
@@ -26,8 +26,6 @@ class Library_Viewer_Admin {
 	 */
 	public function __construct()
 	{
-		if( !is_admin() ) return;
-
 		add_action('admin_notices', [$this, 'lv_addons_need_update']);
 		add_action('admin_notices', [$this, 'deprecated_hooks_notices']);
 	}

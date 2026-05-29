@@ -16,69 +16,50 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 A File & Folder Viewer for FTP folders, enabling the display of library contents (folders & files) on the front-end.
 
+== Quick Start ==
+
+1. Create a folder named "library" in your server root (e.g. public_html/library)
+2. Upload your files and folders inside it
+3. Add the shortcode [library-viewer] to any page or post
+4. Publish the page and view your library
+5. (Optional) Use shortcode parameters to control access and behavior
+
 == Description ==
 
-Spoiler:
-[LIBRARY VIEWER FOR WOOCOMMERCE ADD-ON](https://www.pexlechris.dev/library-viewer/for-woocommerce/) has been released! Check it ;-)
-
-With Library Viewer, you can display the containing files and the containing folders of a "specific folder" of your (FTP) server to your users in the front-end.
-
-The **significant difference** from other similar plugins is that:
-1. You can allow users to **view that the files exist**, but **cannot open them if they are not logged in** (or if they are not administrators, or authors etc...).
-2. You can allow users to view files in a **custom viewer or redirect them** through a RESTful web service of your choice(examples exists below).
+Library Viewer allows you to display files and folders from a specific directory on your server to your front-end users. It is designed to be lightweight, secure, and easy to use.
 
 [DEMO](https://www.pexlechris.dev/library-viewer/demo-wp)
 
-For this plugin (the free version), the "specific folder" is the folder
-"library" of your httpdocs(yoursite.com/library).
-If you want to display other folder (and its files) that isn't contained in yoursite.com/library , you need to use the path parameter of [Library Viewer Pro](https://www.pexlechris.dev/library-viewer/pro-wp).
+**Key Features:**
+* **Access Control:** Allow users to browse files but restrict opening them to logged-in users or specific roles.
+* **Custom Viewer:** Open files in a custom viewer or redirect them via a web service of your choice.
+* **Breadcrumb Navigation:** Easy navigation through subfolders (Pro version).
+* **Search & Filter:** Show or hide specific files and folders (Pro version).
 
-This plugin adds the [library-viewer] shortcode in your WordPress site!
-So the only thing that you must do to display the folders and files in the front-end is to add this shortcode in a post, page, widget etc.
-
-The [library-viewer] shortcode get **optional parameters** that extend the functionality of plugin:
+For the free version, the plugin displays the contents of the **"library"** folder in your site's root directory (e.g., `yoursite.com/library`). To display any other directory, you can use the `path` parameter available in **[Library Viewer Pro](https://www.pexlechris.dev/library-viewer/pro-wp)**.
 
 == Parameters Documentation ==
-&nbsp;&nbsp;[PARAMETERS DOCUMENTATION AND USE CASES](https://www.pexlechris.dev/library-viewer/parameters-wp)
+[FULL PARAMETERS DOCUMENTATION AND USE CASES](https://www.pexlechris.dev/library-viewer/parameters-wp)
 
-&nbsp;&nbsp;**PARAMETERS OF LIBRARY VIEWER**
+**CORE PARAMETERS**
+* **have_file_access**: Determines which users or roles can open files.
+* **my_doc_viewer**: Specifies the viewer to use (e.g., `library-viewer`).
+* **login_page**: The URL to redirect users who need to log in to see a file.
 
-* **have_file_access** (have_file_access parameter determines which user have access to view the files.)
-* **my_doc_viewer** (my_doc_viewer parameter determines in which viewer the file will be opened.)
-* **login_page** (login_page parameter defines the login page that user will be redirected -if need it-, to log in.)
+**PRO PARAMETERS**
+* **path**: Absolute path to any server folder you want to display.
+* **guest_view_access**: Control if guests can see folder contents.
+* **breadcrumb**: Show or hide the navigation path.
+* **hidden_folders / shown_folders**: Exclude or include specific folders.
+* **hidden_files / shown_files**: Exclude or include specific files.
+* **url_suffix**: Use multiple shortcodes on the same page.
 
-&nbsp;&nbsp;**PARAMETERS OF [LIBRARY VIEWER FOR WOOCOMMERCE](https://www.pexlechris.dev/library-viewer/for-woocommerce/)**
+**WOOCOMMERCE PARAMETERS**
+* **have_file_access="customer_with_folder_access"**: Grant access to product owners.
+* **sold_on**: Specify the product ID required for access.
 
-* **have_file_access="customer_with_folder_access"** (The `customer_with_folder_access` value for the `have_file_access` parameter grants access to users who have purchased a product with folder access.)
-* **sold_on** (sold_on parameter specifies which product must be purchased in order to gain folder access.)
-
-
-&nbsp;&nbsp;**PARAMETERS OF [LIBRARY VIEWER PRO](https://www.pexlechris.dev/library-viewer/pro-wp)**
-
-* **path** (path determines which folder to display in the Library on the front end. When we refer to a "folder," we mean the folder's contents, including any subfolders and files within it.)
-* **guest_view_access** (guest_view_access determines if guest users can view folder contents. By default, all users can see folder contents, but they cannot open files.)
-* **waiting_seconds** (waiting_seconds parameter sets the seconds of user is waiting the redirection to login and see the file (0: for instant redirect).)
-* **breadcrumb** (breadcrumb parameter determines if breadcrumb will be displayed in the Library in front-end or not.)
-* **hidden_folders** (hidden_folders determines which folders will not be displayed and will not be accessible by Library in the front-end.)
-* **shown_folders** (shown_folders parameter determines which folders will be displayed and will be accessible by Library in the front-end.)
-* **hidden_files** (hidden_files determines which files will not be displayed and will not be accessible by Library in the front-end.)
-* **shown_files** (shown_files parameter determines which files will be displayed and will be accessible by Library in the front-end.)
-* **url_suffix** (url_suffix allow you to add a suffix in the URL, so you can use the [library-viewer] shortcode more than one time in the same page.)
-
-&nbsp;&nbsp;**PARAMETERS OF [LIBRARY VIEWER FILE MANAGER ADD-ON](https://www.pexlechris.dev/library-viewer/fm-wp)**
-
-* **delete_folder** (delete_folder parameter determines which user can delete a folder.)
-* **delete_file** (delete_file parameter determines which user can delete a file.)
-* **rename_folder** (rename_folder parameter determines which user can rename a folder.)
-* **rename_file** (rename_folder parameter determines which user can rename a file.)
-* **create_folder** (create_folder parameter determines which user can create a folder.)
-* **upload_file** (upload_file parameter determines which user can upload a file.)
-* **unzip_file** (unzip_file parameter determines which user can unzip a zip file.)
-* **download_folder** (download_folder parameter determines which user can download a folder as a zip file.)
-* **download_file** (download_file parameter determines which user can download a file.)
-
-&nbsp;
-[PARAMETERS DOCUMENTATION AND USE CASES](https://www.pexlechris.dev/library-viewer/parameters-wp)
+**FILE MANAGER PARAMETERS**
+* **upload_file, delete_file, rename_file, create_folder, unzip_file**: Grant specific management permissions to users.
 
 &nbsp;
 
@@ -90,50 +71,55 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
 
 
 
-== Other Details ==
+== Premium Extensions ==
 
-* The algorithm does not show in the front-end folders that contains in their name the string "hidden-folder".
-  Also does not show .php , .ini files and files that contains in their name the string "hidden-file".
-  So if you don't want to display an existing folder or file, you can rename it appropriately!
-  In addition, With **Library Viewer Pro**, you can **set the names that you don't (and you do) want to be displayed** in the front-end using appropriate shortcode parameters.
-* If you want to add text above the front-end folders or below the front-end files, view more in the FAQ below.
-* In addition, with the **[LIBRARY VIEWER PRO](https://www.pexlechris.dev/library-viewer/pro-wp)** you can,
- - customize the URLs of library viewer, with the hooks and the parameters.
- - you can display folders & files of a directory (in FTP) of your choice, **not only library directory** (yoursite.com/library)
- - you can hide the breadcrumb with just a shortcode parameter.
- - you can show/hide the folders and files of your choice.
-* Also, with the **[LIBRARY VIEWER FOR WOOCOMMERCE ADD-ON](https://www.pexlechris.dev/library-viewer/for-woocommerce/)** you can,
- - give the ability to you users to **gain folder access** to a Library (to a page with the Library Viewer shortcode installed), just **buying** a virtual/with-folder-access product.
-* Finally, with the **[LIBRARY VIEWER FILE MANAGER ADD-ON](https://www.pexlechris.dev/library-viewer/fm-wp)** you can,
- - give the ability to your users to have their own library and to upload and edit files.
- - use the library as file manager for your admins (you may need also Library Viewer Pro, and to restrict the WP page from other users)
+* With **[LIBRARY VIEWER PRO](https://www.pexlechris.dev/library-viewer/pro-wp)** you can:
+ - Display **any folder on your server**, not just the default "library" folder.
+ - Customize URLs with hooks and parameters.
+ - Show or hide the breadcrumb with a simple shortcode parameter.
+ - Gain full control over which folders and files are displayed or hidden.
+ - Forbid direct access to files, ensuring they are only accessible via the Library Viewer.
+* With the **[LIBRARY VIEWER FOR WOOCOMMERCE ADD-ON](https://www.pexlechris.dev/library-viewer/for-woocommerce/)** you can:
+ - Grant library access to customers who purchase specific products.
+ - Create a "Members Only" file area linked to WooCommerce purchases.
+* With the **[LIBRARY VIEWER FILE MANAGER ADD-ON](https://www.pexlechris.dev/library-viewer/fm-wp)** you can:
+ - Allow users to upload, rename, delete, and manage files directly from the front-end.
+ - Use the library as a powerful front-end file manager for your admins or specific user roles.
 
 
 
 == Screenshots ==
 
-1. library folder must be located in the root of your FTP server
-2. Not all files and folders are displaying in the front-end Library Viewer because of their special names (hidden-folder, hidden-file, .php etc.)
-3. The string-value of the $text_at_beginning variable is displayed between the breadcrumb and the folders, the string-value of the $text_at_end variable is displayed below the folders & files.
-4. With Library Viewer File Manager Add-On, you can give the ability to some of your users to manage the library from the front-end.
+1. Default structure: The "library" folder must be located in the root of your FTP server.
+2. Front-end display: Notice how hidden folders and files (like .php) are automatically excluded.
+3. Custom text: You can easily add text above or below the file list using the `include.php` file or hooks.
+4. Front-end Management: With the File Manager Add-on, authorized users can manage the library directly from the front-end.
 
 == Frequently Asked Questions ==
 
- = Can I forbid the direct access in the files of the library? I want only via library files can be accessible. =
- With Library Viewer Pro, you can! See this support topic: [wordpress.org/support/topic/executable-pdf-file](https://wordpress.org/support/topic/executable-pdf-file/)
+ = Can I forbid the direct access to the files in my library? =
+ Yes, with **[Library Viewer Pro](https://www.pexlechris.dev/library-viewer/pro-wp)** you can protect your files so they are only accessible through the plugin's viewer, preventing direct URL access.
 
+ = How can I grant library access only to my WooCommerce customers? =
+ You can use the **[Library Viewer for WooCommerce Add-on](https://www.pexlechris.dev/library-viewer/for-woocommerce/)**. It allows you to link specific folders to WooCommerce products, granting access automatically upon purchase.
 
- = How can I deny users to execute php files in folders of my library? =
- You need to add the following code in the .htaccess file of the folder that you want to deny users execute php files
+ = Can users upload or manage files from the front-end? =
+ Yes, by adding the **[Library Viewer File Manager Add-on](https://www.pexlechris.dev/library-viewer/fm-wp)**. This enables front-end uploading, renaming, and deletion of files and folders based on user roles.
+
+ = Can I hide specific folders or files from the library? =
+ Yes. By default, the plugin hides:
+ * Folders containing the string "hidden-folder" in their name.
+ * Files containing the string "hidden-file" in their name.
+ * All `.php` and `.ini` files.
+ Rename your files or folders accordingly to hide them. For more advanced control (including specific inclusion/exclusion lists), you can use **[Library Viewer Pro](https://www.pexlechris.dev/library-viewer/pro-wp)**.
+
+ = How can I deny users from executing PHP files in my library folders? =
+ To enhance security, you should add the following code to a `.htaccess` file inside the folder you want to protect:
  `
  <Files *.php>
  deny from all
  </Files>
  `
-
-
- = Can I hide an existing folder or file of FTP folder from the front-end library? =
- Yes. Please read carefully the section "Other Details" of plugin.
 
 
  = Are there shortcode examples? =
@@ -149,9 +135,7 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
  - Check your permalinks PLAIN PERMALINKS ARE NOT SUPPORTED. Please change your permalink from /wp-admin/options-permalink.php to something else.
  - Check the folders' and files' read permissions (safe choice is to use 644)
  - If you use the plugin **Remove Uppercase Ascents** and a CSS code like *.library-viewer--folder{text-transform: uppercase;}* maybe this cause the problem. The solution in this case is to use instead this CSS code: .library-viewer--folder h3 a{text-transform: uppercase;}
-- Check if the file or folder has special characters in its name. Some are not supported as names of folders and files such as %.
- In this case, contact me via [email](mailto:info@pexlechris.dev) or via [support forum](https://wordpress.org/support/plugin/library-viewer/) to find a solution!
- - If you use the plugin **Remove Uppercase Ascents** and a CSS code like *.library-viewer--folder{text-transform: uppercase;}* maybe this cause the problem. The solution in this case is to use instead this CSS code: .library-viewer--folder h3 a{text-transform: uppercase;}
+ - Check if the file or folder has special characters in its name. Some are not supported as names of folders and files such as %. In this case, contact me via [email](mailto:info@pexlechris.dev) or via [support forum](https://wordpress.org/support/plugin/library-viewer/) to find a solution!
  - For other problems, you can open a support ticket in [support forum](https://wordpress.org/support/plugin/library-viewer/)
 
 
@@ -167,10 +151,6 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
  `
  &nbsp;
  Also, you can use the hooks `lv_folder_text_at_beginning` and `lv_folder_text_at_end` respectively for this scope.
-
-
- = How to upload files and create new folders? =
- You can do this via FTP/cPanel or you can buy the **[Library Viewer File Manager Add-on](https://www.pexlechris.dev/library-viewer/fm-wp)** to manage the folder from the front-end.
 
 
  = Is Library Viewer' file viewer supports all mime types (file extensions)?
@@ -201,11 +181,10 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
 
 == Installation ==
 
-1. Download the plugin from [Official WP Plugin Repository](https://wordpress.org/plugins/library-viewer/)
-2. Upload Plugin from your WP Dashboard ( Plugins>Add New>Upload Plugin ) the library-viewer.zip file.
-3. Activate the plugin through the 'Plugins' menu in WordPress Dashboard
-4. Add to a new or existing page/post (or widget etc.) the shortcodes [library-viewer] with the parameters of your choice.
-5. Create the folder library and put files and folders there.
+1. Download the plugin from the [Official WP Plugin Repository](https://wordpress.org/plugins/library-viewer/).
+2. Upload the plugin through your WordPress Dashboard (**Plugins > Add New > Upload Plugin**).
+3. Activate the plugin through the **Plugins** menu.
+4. For quick configuration and usage instructions, please refer to the **Quick Start** section at the beginning of this document.
 
 
 

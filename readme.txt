@@ -40,11 +40,12 @@ This plugin adds the [library-viewer] shortcode to your WordPress site. Simply a
 == Library Viewer Admin Pages ==
 
 The Library Viewer Admin Pages is a powerful feature introduced in version 3.3.0 that brings library functionality directly into your WordPress dashboard. It is designed for site owners and administrators (not only administrators) who need a quick and convenient way to browse their library without visiting the front end.
+&nbsp;&nbsp;[ADMIN PAGE DOCUMENTATION](https://www.pexlechris.dev/library-viewer/docs/admin_page/)
 
 **Key Features of the Admin Page:**
 *   **Centralized Browsing:** View all files and folders in your "library" folder (or in other directories when using Library Viewer Pro) directly from the **Media > Library Viewer** menu.
 *   **Customizable Access:** You can define exactly which user roles or capabilities (e.g., editors, custom roles) have permission to view this admin page.
-*   **Flexible Display:** The admin page uses the same powerful engine as the shortcode. You can even customize the display settings specifically for the admin area using the built-in settings tab.
+*   **Flexible Display:** The admin page uses the same powerful engine as the shortcode. In the "Library to display" field, **you can set any [library-viewer] shortcode** with the parameters of your choice (as described in the Parameters Documentation) to customize the backend display.
 *   **Easy Navigation:** Includes a dedicated "Settings" tab where you can change the page title and manage access permissions without touching any code.
 
 **How to Use:**
@@ -138,6 +139,7 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
 
  = How can I use the new Library Viewer Admin Page? =
  Starting from version 3.3.0, you can access your library directly from the WordPress back-end. Simply navigate to **Media > Library Viewer**. You can browse your files in the "Library" tab and customize the page title or access permissions in the "Settings" tab. This is perfect for administrators who need quick access without leaving the dashboard!
+ Read more in [ADMIN PAGE DOCUMENTATION](https://www.pexlechris.dev/library-viewer/docs/admin_page/)
 
 
  = Can I display a folder that is outside of my WordPress root directory? =

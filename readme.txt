@@ -8,9 +8,9 @@ Tags: FTP, file manager, file list, download manager
 Version: 3.3.0
 Stable tag: 3.3.0
 Requires at least: 3.0.0
-Tested up to: 6.8.1
-Requires PHP: 7.0
-Tested up to PHP: 8.2
+Tested up to: 7.0
+Requires PHP: 7.4
+Tested up to PHP: 8.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,8 +18,8 @@ A File & Folder Viewer for FTP folders, enabling the display of library contents
 
 == Description ==
 
-Spoiler:
-[LIBRARY VIEWER FOR WOOCOMMERCE ADD-ON](https://www.pexlechris.dev/library-viewer/for-woocommerce/) has been released! Check it ;-)
+**New in Version 3.3.0: Admin Library Viewer!**
+You can now manage and browse your library directly from your WordPress dashboard. Go to **Media > Library Viewer** to get started.
 
 With Library Viewer, you can display the containing files and the containing folders of a "specific folder" of your (FTP) server to your users.
 
@@ -37,12 +37,12 @@ If you want to display other folder (and its files) that isn't contained in your
 
 This plugin adds the [library-viewer] shortcode to your WordPress site. Simply add this shortcode to any post, page, or widget to display your library to your users.
 
-== Admin Library Viewer ==
+== Library Viewer Admin Pages ==
 
-The Admin Library Viewer is a powerful feature introduced in version 3.3.0 that brings the functionality of the library directly into your WordPress dashboard. It is designed for site owners and administrators who need a quick and easy way to browse their library without navigating to the front-end.
+The Library Viewer Admin Pages is a powerful feature introduced in version 3.3.0 that brings library functionality directly into your WordPress dashboard. It is designed for site owners and administrators (not only administrators) who need a quick and convenient way to browse their library without visiting the front end.
 
 **Key Features of the Admin Page:**
-*   **Centralized Browsing:** View all files and folders in your "library" folder directly from the **Media > Library Viewer** menu.
+*   **Centralized Browsing:** View all files and folders in your "library" folder (or in other directories when using Library Viewer Pro) directly from the **Media > Library Viewer** menu.
 *   **Customizable Access:** You can define exactly which user roles or capabilities (e.g., editors, custom roles) have permission to view this admin page.
 *   **Flexible Display:** The admin page uses the same powerful engine as the shortcode. You can even customize the display settings specifically for the admin area using the built-in settings tab.
 *   **Easy Navigation:** Includes a dedicated "Settings" tab where you can change the page title and manage access permissions without touching any code.
@@ -136,6 +136,10 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
 
 == Frequently Asked Questions ==
 
+ = How can I use the new Library Viewer Admin Page? =
+ Starting from version 3.3.0, you can access your library directly from the WordPress back-end. Simply navigate to **Media > Library Viewer**. You can browse your files in the "Library" tab and customize the page title or access permissions in the "Settings" tab. This is perfect for administrators who need quick access without leaving the dashboard!
+
+
  = Can I display a folder that is outside of my WordPress root directory? =
  Yes, with **[Library Viewer Pro](https://www.pexlechris.dev/library-viewer/pro-wp)** you can display any folder on the same server, even if it is outside your WordPress installation directory (e.g., above the public_html folder), as long as the server's PHP has access to it.
  This can be achieved using the `lv_filter_global_abspath` filter to change the default ABSPATH to the root path of the folder you want to display.
@@ -228,11 +232,15 @@ Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.p
 3. Activate the plugin through the 'Plugins' menu in WordPress Dashboard
 4. Add to a new or existing page/post (or widget etc.) the shortcodes [library-viewer] with the parameters of your choice.
 5. Create the folder library and put files and folders there.
+6. To view your library in the backend, navigate to **Media > Library Viewer**.
 
 
 
 == Changelog ==
  = 3.3.0 =
+* Tested up to WP: 7.0
+* New Required PHP version: 7.4
+* Tested up to PHP: 8.3
 * [New Feature]: **Admin Library Viewer!** Display and manage your library directly from the WordPress backend (Media > Library Viewer).
 * [New]: **Plain permalinks & preview pages are now supported** in the library-viewer shortcode!
 * [New]: Autoload behavior can now be controlled via the filter `lv_autoload_shortcodes`. It is recommended to autoload this option **only if shortcodes are used on every page**.

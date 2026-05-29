@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Library Viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-06 19:19+0000\n"
+"POT-Creation-Date: 2026-04-23 21:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -17,33 +17,46 @@ msgstr ""
 
 #. %2$s is the name of class
 #. %1$s is the name of method
-#: library-viewer.php:588
+#: library-viewer.php:738
 #, php-format
 msgid "%1$s method is not registered in %2$s class."
 msgstr ""
 
-#: library-viewer.php:509
+#: library-viewer.php:659
 msgid "Buy Access"
 msgstr ""
 
-#: admin/class-library-viewer-plugin-page.php:47
+#: admin/class-library-viewer-admin-page.php:135
+#, php-format
+msgid "Default: %s."
+msgstr ""
+
+#: admin/class-library-viewer-plugin-row.php:49
 msgid "Documentation"
 msgstr ""
 
-#: library-viewer.php:565
+#: library-viewer.php:715
 msgid "Download is forbidden for php files"
 msgstr ""
 
-#: library-viewer.php:642
+#: library-viewer.php:792
 msgid "Error 404: This folder doesn't exists."
 msgstr ""
 
-#: library-viewer.php:549
+#: library-viewer.php:699
 msgid "File doesn't exists."
 msgstr ""
 
-#: library-viewer.php:654
+#: admin/class-library-viewer-admin-page.php:76
+msgid "General Settings"
+msgstr ""
+
+#: library-viewer.php:804
 msgid "Go Back"
+msgstr ""
+
+#: admin/class-library-viewer-admin-page.php:128
+msgid "HTML is allowed here."
 msgstr ""
 
 #. Author URI of the plugin
@@ -54,20 +67,33 @@ msgstr ""
 msgid "https://www.pexlechris.dev/library-viewer"
 msgstr ""
 
+#: admin/class-library-viewer-admin-page.php:197
+msgid "Library"
+msgstr ""
+
+#: admin/class-library-viewer-admin-page.php:99
+msgid "Library to display (Paste shortcode here)"
+msgstr ""
+
 #. Name of the plugin
+#: library-viewer.php:467 admin/class-library-viewer-admin-page.php:28
 msgid "Library Viewer"
 msgstr ""
 
-#: library-viewer.php:514 library-viewer.php:530
+#: library-viewer.php:664 library-viewer.php:680
 msgid "Login"
 msgstr ""
 
-#: library-viewer.php:581
+#: library-viewer.php:731
 msgid "LV_file_viewer_class_name filter has returned a non registered class."
 msgstr ""
 
-#: library-viewer.php:569
+#: library-viewer.php:719
 msgid "LV_shortcode_class_name filter has returned a non registered class."
+msgstr ""
+
+#: admin/class-library-viewer-admin-page.php:83
+msgid "Page Title"
 msgstr ""
 
 #. Author of the plugin
@@ -75,36 +101,40 @@ msgid "Pexle Chris"
 msgstr ""
 
 #. %s shortcode parameter
-#: library-viewer.php:635
+#: library-viewer.php:785
 #, php-format
 msgid "Probably, <b>%s</b> parameter is not supported yet."
 msgstr ""
 
-#: library-viewer.php:658
+#: library-viewer.php:808
 msgid "Redirection to login page"
 msgstr ""
 
+#: admin/class-library-viewer-admin-page.php:202
+msgid "Settings"
+msgstr ""
+
 #. %s is the name of class
-#: library-viewer.php:575
+#: library-viewer.php:725
 #, php-format
 msgid "shortcode_html_contents method is not registered in %s class."
 msgstr ""
 
-#: library-viewer.php:553
+#: library-viewer.php:703
 msgid ""
 "Sorry. You haven't the appropriate capabilities to view the files of our "
 "Library Viewer."
 msgstr ""
 
 #. %s is folder name
-#: library-viewer.php:539
+#: library-viewer.php:689
 #, php-format
 msgid ""
 "The folder <strong>%s</strong> has been created. This page will be refreshed."
 " Please wait."
 msgstr ""
 
-#: library-viewer.php:650
+#: library-viewer.php:800
 msgid "This folder is empty."
 msgstr ""
 
@@ -115,9 +145,13 @@ msgid ""
 "of your library on front-end"
 msgstr ""
 
+#: admin/class-library-viewer-admin-page.php:91
+msgid "Who can access the library tab (roles or capabilities, comma-separated)"
+msgstr ""
+
 #. %1$s is the parameter
 #. %2$s is the Library Viewer Pro URL
-#: library-viewer.php:620 library-viewer.php:628
+#: library-viewer.php:770 library-viewer.php:778
 #, php-format
 msgid ""
 "You cannot use <b>%1$s</b> parameter in shortcode.<br>If you want to use <b>"
@@ -126,7 +160,7 @@ msgid ""
 msgstr ""
 
 #. %s Library Viewer Pro URL
-#: library-viewer.php:613
+#: library-viewer.php:763
 #, php-format
 msgid ""
 "You cannot use <b>path</b> parameter in shortcode.<br>If you want to display "
@@ -137,7 +171,7 @@ msgstr ""
 
 #. %1$s is [library-viewer]
 #. %2$s is Library Viewer Pro Buy URL
-#: library-viewer.php:599
+#: library-viewer.php:749
 #, php-format
 msgid ""
 "You cannot use shortcode %1$s more than 1 times in the same page without the "
@@ -146,22 +180,22 @@ msgid ""
 "<strong>url_suffix</strong> parameter for more."
 msgstr ""
 
-#: library-viewer.php:545
+#: library-viewer.php:695
 msgid "You haven't access to files from this folder."
 msgstr ""
 
-#: library-viewer.php:646
+#: library-viewer.php:796
 msgid "You haven't access to this folder."
 msgstr ""
 
 #. %s is seconds
-#: library-viewer.php:559
+#: library-viewer.php:709
 #, php-format
 msgid ""
 "You must login to view this file.<br>You will be redirected to the login "
 "page in <strong>%s seconds.</strong>"
 msgstr ""
 
-#: library-viewer.php:529
+#: library-viewer.php:679
 msgid "You need to login to view this page."
 msgstr ""

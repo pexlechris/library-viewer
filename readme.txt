@@ -16,6 +16,52 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 A File & Folder Viewer for FTP folders, enabling the display of library contents (folders & files) on the front-end.
 
+
+== Description ==
+
+**New in Version 3.3.0: Admin Library Viewer!**
+You can now manage and browse your library directly from your WordPress dashboard. Go to **Media > Library Viewer** to get started.
+
+
+Library Viewer allows you to display files and folders from your server directly on your WordPress site.
+
+By default, the free version displays the contents of the **"library"** folder located in your site's root directory (example: `yoursite.com/library`). To display any other directory, you can use the `path` parameter available in **[Library Viewer Pro](https://www.pexlechris.dev/library-viewer/pro-wp)**.
+
+Whether you want to create a public document library, a members-only download area, or an internal file portal, Library Viewer provides a lightweight and flexible solution.
+
+Unlike traditional file manager plugins, Library Viewer focuses on controlled visibility and flexible file access.
+
+You can:
+
+* Allow users to browse files without allowing them to open or download them
+* Restrict file access based on login status or user roles
+* Open files using custom viewers or external services
+* Integrate file access with WooCommerce purchases
+* Manage your library directly from the WordPress dashboard
+
+
+== Live Demo ==
+Explore a working example of Library Viewer:
+[View Demo](https://www.pexlechris.dev/library-viewer/demo-wp)
+
+
+== Ideal Use Cases ==
+
+* Document libraries
+* Members-only downloads
+* WooCommerce customer downloads
+* Internal company file portals
+* Educational resources
+* Front-end file management systems
+
+== Key Features ==
+
+* **Access Control:** Allow users to browse files but restrict opening them to logged-in users or specific roles.
+* **Custom Viewer:** Open files in a custom viewer or redirect them via a web service of your choice.
+* **Breadcrumb Navigation:** Easy navigation through subfolders.
+* **Search & Filter:** Show or hide specific files and folders (Pro version).
+
+
 == Quick Start ==
 
 1. Create a folder named "library" in your server root (e.g. public_html/library)
@@ -25,42 +71,26 @@ A File & Folder Viewer for FTP folders, enabling the display of library contents
 5. (Optional) Use shortcode parameters to control access and behavior
 6. To view your library in the backend, navigate to **Media > Library Viewer**.
 
-== Description ==
-
-**New in Version 3.3.0: Admin Library Viewer!**
-You can now manage and browse your library directly from your WordPress dashboard. Go to **Media > Library Viewer** to get started.
-
-With Library Viewer, you can display the containing files and the containing folders of a "specific folder" of your (FTP) server to your users.
-For the free version, the plugin displays the contents of the **"library"** folder in your site's root directory (e.g., `yoursite.com/library`). To display any other directory, you can use the `path` parameter available in **[Library Viewer Pro](https://www.pexlechris.dev/library-viewer/pro-wp)**.
-
-Whether you want to share documents with your customers on the front-end or manage them internally from the WordPress dashboard, Library Viewer provides a seamless and secure experience.
-
-The **significant difference** from other similar plugins is that:
-1. You can allow users to **view that the files exist**, but **cannot open them if they are not logged in** (or if they are not administrators, or authors etc...).
-2. You can allow users to view files in a **custom viewer or redirect them** through a RESTful web service of your choice (examples exist below).
-3. **Admin Integration:** Administrators can now browse the library directly from the WordPress back-end, making file management easier than ever.
-
-[DEMO](https://www.pexlechris.dev/library-viewer/demo-wp)
-
-**Key Features:**
-* **Access Control:** Allow users to browse files but restrict opening them to logged-in users or specific roles.
-* **Custom Viewer:** Open files in a custom viewer or redirect them via a web service of your choice.
-* **Breadcrumb Navigation:** Easy navigation through subfolders.
-* **Search & Filter:** Show or hide specific files and folders (Pro version).
 
 
 == Library Viewer Admin Pages ==
+[ADMIN PAGE DOCUMENTATION](https://www.pexlechris.dev/library-viewer/docs/admin_page/)
 
-The Library Viewer Admin Pages is a powerful feature introduced in version 3.3.0 that brings library functionality directly into your WordPress dashboard. It is designed for site owners and administrators (not only administrators) who need a quick and convenient way to browse their library without visiting the front end.
-&nbsp;&nbsp;[ADMIN PAGE DOCUMENTATION](https://www.pexlechris.dev/library-viewer/docs/admin_page/)
+The Library Viewer Admin Pages feature, introduced in version 3.3.0, brings library functionality directly into your WordPress dashboard.
+It is designed for site owners and administrators who need quick access to their libraries without visiting the front end.
+Unlike a single fixed admin screen, Library Viewer allows you to register **multiple Library Viewer Admin Pages**, each with its own configuration, permissions, and displayed library.
+
+For advanced usage and full configuration options, please refer to the Admin Page Documentation.
 
 **Key Features of the Admin Page:**
+
 *   **Centralized Browsing:** View all files and folders in your "library" folder (or in other directories when using Library Viewer Pro) directly from the **Media > Library Viewer** menu.
 *   **Customizable Access:** You can define exactly which user roles or capabilities (e.g., editors, custom roles) have permission to view this admin page.
 *   **Flexible Display:** The admin page uses the same powerful engine as the shortcode. In the "Library to display" field, **you can set any [library-viewer] shortcode** with the parameters of your choice (as described in the Parameters Documentation) to customize the backend display.
 *   **Easy Navigation:** Includes a dedicated "Settings" tab where you can change the page title and manage access permissions without touching any code.
 
 **How to Use:**
+
 1.  Go to your WordPress Dashboard.
 2.  Navigate to **Media > Library Viewer**.
 3.  Use the **Library** tab to browse your files.
@@ -71,42 +101,42 @@ The Library Viewer Admin Pages is a powerful feature introduced in version 3.3.0
 
 &nbsp;&nbsp;**PARAMETERS OF LIBRARY VIEWER**
 
-* **have_file_access** (have_file_access parameter determines which users have access to view the files.)
-* **my_doc_viewer** (my_doc_viewer parameter determines which viewer will be used to open the file.)
-* **login_page** (login_page parameter defines the login page that user will be redirected -if need it-, to log in.)
+* **have_file_access** (have_file_access parameter controls which users can access and view files.)
+* **my_doc_viewer** (my_doc_viewer parameter defines which viewer is used to open files.)
+* **login_page** (login_page parameter sets the login page where users are redirected if authentication is required)
 
 &nbsp;&nbsp;**PARAMETERS OF [LIBRARY VIEWER FOR WOOCOMMERCE](https://www.pexlechris.dev/library-viewer/for-woocommerce/)**
 
-* **have_file_access="customer_with_folder_access"** (The `customer_with_folder_access` value for the `have_file_access` parameter grants access to users who have purchased a product with folder access.)
-* **sold_on** (sold_on parameter specifies which product must be purchased in order to gain folder access.)
+* **have_file_access="customer_with_folder_access"** (The `customer_with_folder_access` value for the `have_file_access` parameter grants access to users who purchased a product with folder access.)
+* **sold_on** (sold_on parameter specifies the WooCommerce product required to unlock folder access.)
 
 
 &nbsp;&nbsp;**PARAMETERS OF [LIBRARY VIEWER PRO](https://www.pexlechris.dev/library-viewer/pro-wp)**
 
-* **path** (path determines which folder to display in the Library on the front end. When we refer to a "folder," we mean the folder's contents, including any subfolders and files within it.)
-* **guest_view_access** (guest_view_access parameter determines whether guest users can view folder contents. By default, all users can see folder contents, but they cannot open files.)
-* **waiting_seconds** (waiting_seconds parameter sets how many seconds users must wait before being redirected to the login page to view the file (0: for instant redirect).)
-* **breadcrumb** (breadcrumb parameter determines if breadcrumb will be displayed in the Library in front-end or not.)
-* **hidden_folders** (hidden_folders parameter determines which folders will not be displayed or accessible in the Library on the front end.)
-* **shown_folders** (shown_folders parameter determines which folders will be displayed and will be accessible by Library in the front-end.)
-* **hidden_files** (hidden_files determines which files will not be displayed and will not be accessible by Library in the front-end.)
-* **shown_files** (shown_files parameter determines which files will be displayed and will be accessible by Library in the front-end.)
-* **url_suffix** (url_suffix allow you to add a suffix in the URL, so you can use the [library-viewer] shortcode more than one time in the same page.)
+* **path** (path parameter defines which server folder is displayed in the front-end library. When we refer to a "folder," we mean the folder's contents, including any subfolders and files within it.)
+* **guest_view_access** (guest_view_access parameter controls whether guest users can view folder contents. By default, all users can see folder contents, but they cannot open files.)
+* **waiting_seconds** (waiting_seconds parameter Sets delay before redirecting users to login (0 = immediate redirect))
+* **breadcrumb** (breadcrumb parameter enables or disables breadcrumb navigation)
+* **hidden_folders** (hidden_folders parameter hides specific folders from the library view)
+* **shown_folders** (shown_folders parameter explicitly defines which folders are visible.)
+* **hidden_files** (hidden_files parameter hides specific files from the library view.)
+* **shown_files** (shown_files parameter explicitly defines which files are visible.)
+* **url_suffix** (url_suffix parameter adds a URL suffix to allow multiple library instances on the same page.)
 
 &nbsp;&nbsp;**PARAMETERS OF [LIBRARY VIEWER FILE MANAGER ADD-ON](https://www.pexlechris.dev/library-viewer/fm-wp)**
 
-* **delete_folder** (delete_folder parameter determines which user can delete a folder.)
-* **delete_file** (delete_file parameter determines which user can delete a file.)
-* **rename_folder** (rename_folder parameter determines which user can rename a folder.)
-* **rename_file** (rename_folder parameter determines which user can rename a file.)
-* **create_folder** (create_folder parameter determines which user can create a folder.)
-* **upload_file** (upload_file parameter determines which user can upload a file.)
-* **unzip_file** (unzip_file parameter determines which user can unzip a zip file.)
-* **download_folder** (download_folder parameter determines which user can download a folder as a zip file.)
-* **download_file** (download_file parameter determines which user can download a file.)
+* **delete_folder** (delete_folder parameter controls permission to delete folders.)
+* **delete_file** (delete_file parameter controls permission to delete files.)
+* **rename_folder** (rename_folder parameter controls permission to rename a folder.)
+* **rename_file** (rename_folder parameter controls permission to rename a file.)
+* **create_folder** (create_folder parameter controls permission to create a folder.)
+* **upload_file** (upload_file parameter controls permission to upload a file.)
+* **unzip_file** (unzip_file parameter controls permission to unzip a zip file.)
+* **download_folder** (download_folder parameter allows downloading folders as ZIP files.)
+* **download_file** (download_file parameter allows downloading individual files.)
 
 &nbsp;
-[PARAMETERS DOCUMENTATION AND USE CASES](https://www.pexlechris.dev/library-viewer/parameters-wp)
+[FULL PARAMETERS DOCUMENTATION AND USE CASES](https://www.pexlechris.dev/library-viewer/parameters-wp)
 
 &nbsp;
 
@@ -114,11 +144,11 @@ The Library Viewer Admin Pages is a powerful feature introduced in version 3.3.0
 
 From 2.0.0 version and then, there are many hooks that you can customize the functionality of this plugin.
 You can read more in [HOOKS DOCUMENTATION](https://www.pexlechris.dev/library-viewer/hooks-wp)
-Read also [how to add PHP hooks in your WordPress Site in my blog](https://www.pexlechris.dev/how-to-add-php-hooks-in-your-wordpress-site)
+Read also in my blog: [How to add PHP hooks in your WordPress Site](https://www.pexlechris.dev/how-to-add-php-hooks-in-your-wordpress-site)
 
 
 
-== Premium Extensions ==
+== Premium Extensions Features ==
 
 * With **[LIBRARY VIEWER PRO](https://www.pexlechris.dev/library-viewer/pro-wp)** you can:
  - Display **any folder on your server**, not just the default "library" folder.

@@ -71,8 +71,8 @@ The Library Viewer Admin Pages is a powerful feature introduced in version 3.3.0
 
 &nbsp;&nbsp;**PARAMETERS OF LIBRARY VIEWER**
 
-* **have_file_access** (have_file_access parameter determines which user have access to view the files.)
-* **my_doc_viewer** (my_doc_viewer parameter determines in which viewer the file will be opened.)
+* **have_file_access** (have_file_access parameter determines which users have access to view the files.)
+* **my_doc_viewer** (my_doc_viewer parameter determines which viewer will be used to open the file.)
 * **login_page** (login_page parameter defines the login page that user will be redirected -if need it-, to log in.)
 
 &nbsp;&nbsp;**PARAMETERS OF [LIBRARY VIEWER FOR WOOCOMMERCE](https://www.pexlechris.dev/library-viewer/for-woocommerce/)**
@@ -84,10 +84,10 @@ The Library Viewer Admin Pages is a powerful feature introduced in version 3.3.0
 &nbsp;&nbsp;**PARAMETERS OF [LIBRARY VIEWER PRO](https://www.pexlechris.dev/library-viewer/pro-wp)**
 
 * **path** (path determines which folder to display in the Library on the front end. When we refer to a "folder," we mean the folder's contents, including any subfolders and files within it.)
-* **guest_view_access** (guest_view_access determines if guest users can view folder contents. By default, all users can see folder contents, but they cannot open files.)
-* **waiting_seconds** (waiting_seconds parameter sets the seconds of user is waiting the redirection to login and see the file (0: for instant redirect).)
+* **guest_view_access** (guest_view_access parameter determines whether guest users can view folder contents. By default, all users can see folder contents, but they cannot open files.)
+* **waiting_seconds** (waiting_seconds parameter sets how many seconds users must wait before being redirected to the login page to view the file (0: for instant redirect).)
 * **breadcrumb** (breadcrumb parameter determines if breadcrumb will be displayed in the Library in front-end or not.)
-* **hidden_folders** (hidden_folders determines which folders will not be displayed and will not be accessible by Library in the front-end.)
+* **hidden_folders** (hidden_folders parameter determines which folders will not be displayed or accessible in the Library on the front end.)
 * **shown_folders** (shown_folders parameter determines which folders will be displayed and will be accessible by Library in the front-end.)
 * **hidden_files** (hidden_files determines which files will not be displayed and will not be accessible by Library in the front-end.)
 * **shown_files** (shown_files parameter determines which files will be displayed and will be accessible by Library in the front-end.)

@@ -5,8 +5,8 @@ Plugin URI: https://www.pexlechris.dev/library-viewer
 Author: Pexle Chris
 Author URI: https://www.pexlechris.dev
 Tags: FTP, file manager, file list, download manager
-Version: 3.3.0
-Stable tag: 3.3.0
+Version: 3.3.1
+Stable tag: 3.3.1
 Requires at least: 3.0.0
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -284,6 +284,10 @@ Read also in my blog: [How to add PHP hooks in your WordPress Site](https://www.
 
 
 == Changelog ==
+ = 3.3.1 =
+* [New]: New hooks introduced: `lv_before_{$method}` and `lv_after_{$method}` for all folder content rendering sections (`print_folder_text_at_beginning`, `print_create_actions_html`, `print_containing_folders`, `print_containing_files`, `print_empty_folder_html`, and `print_folder_text_at_end`).
+* [Enhancement]: Minor change about how the filters `lv_filter_global_{$global}` are called
+
  = 3.3.0 =
 * Tested up to WP: 7.0
 * New Required PHP version: 7.4

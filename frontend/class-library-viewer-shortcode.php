@@ -174,6 +174,7 @@ class Library_Viewer_Shortcode {
 	{
 		$this->class_names = array_reverse(array_values(array_merge([get_class($this)], class_parents($this))));
 
+		// Not allowed change by filter "lv_filter_global_{$global}"
 		$this->globals['file_identifier'] = Library_Viewer_Init::get_file_identifier();
 
 		if($register_hooks){
@@ -330,6 +331,8 @@ class Library_Viewer_Shortcode {
 		$this->initialized = true;
 
 		/**
+		 * These globals that are set here, are not allowed to be changed by filter "lv_filter_global_{$global}"
+		 *
 		 * @since 2.0.8 $parameters added
 		 */
 		$this->action('init_globals_before_init_parameters', $parameters);
@@ -351,85 +354,72 @@ class Library_Viewer_Shortcode {
 			}
 		}
 
-		$filter_allowed_parameters = $this->filter('filter_allowed_parameters', []);
-
-
 		/**
-		 * If method exists for each parameter, initialized.
-		 * If not, is added to `invalid_parameters` property.
+		 * Collect invalid_parameters
 		 */
-		foreach ($this->parameters as $parameter => $v) {
-			$method = 'init_parameter_' . $parameter;
+		foreach ($this->parameters as $parameter_name => $v) {
+			$method = 'init_parameter_' . $parameter_name;
 			if ( !method_exists($this, $method) ) {
-				$this->invalid_parameters[] = $parameter;
-				continue;
+				$this->invalid_parameters[] = $parameter_name;
 			}
-
-			$this->$method( $this->parameters ); // call init method
-
-			if ( isset($this->globals[$parameter]) && in_array( $parameter, $filter_allowed_parameters ) ) {
-				/**
-				 * Filter the $parameter (the parameters as globals 'have_file_access' etc...).
-				 *
-				 * With this filter, you can filter the parameters (as global variables).
-				 * These parameters can be filtered BEFORE the rest globals' initialization.
-				 *
-				 * But I mean the corresponding globals variables,
-				 * not exactly the strings/parameters that user pass in the shortcode.
-				 *
-				 * For example,
-				 * When the shortcode is
-				 * [library-viewer have_file_access="editor, author"]
-				 * the $global variable have_file_access is the array
-				 * array(
-				 *		0 => 'editor',
-				 *		1 => 'author'
-				 * )
-				 * and NOT the 'editor, author' string.
-				 *
-				 * @since 2.0.3
-				 *
-				 * @param string|array $this->globals[$parameter] The value of the $parameter variable.
-				 * @param array $this->globals See property's documentation.
-				 */
-				$this->globals[$parameter] = apply_filters("lv_filter_global_{$parameter}", $this->globals[$parameter], $this->globals);
-			}
-
 		}
 
 
+		$filter_allowed_parameters = $this->filter('filter_allowed_parameters', []);
 		$filter_allowed_globals = $this->filter('filter_allowed_globals', []);
 
 
 		/**
-		 * globals assigned as null, will be initialized with a value by method init_global_{$_global}
+		 * If global is parameter & used in the shortcode:
+		 *  -> If method exists for each parameter, initialized & filter the value.
+		 *  -> If not, is added to `invalid_parameters` property.
+		 *
+		 * If global is parameter & NOT used in the shortcode:
+		 *  -> just filter its value
+		 *
+		 * If global is not a parameter:
+		 *  -> If method exists, call init global & filter it
+		 *  -> If not, just filter its value
+		 *
+		 * @since 3.3.1 Reconstruct the way that globals are called and filtered
 		 */
 		foreach ($this->globals as $global => $global_value) {
-			if ( !is_null($global_value) ) {
-				continue;
+
+			// if is parameter in the current shortcode
+			if ( isset( $this->parameters[$global] ) ){
+
+				$method = 'init_parameter_' . $global;
+				if ( method_exists($this, $method) ) {
+					$this->$method( $this->parameters ); // call init method for parameters
+				}
+
+				$allow_filter = in_array( $global, $filter_allowed_parameters );
+
+			}else{
+
+				$method = 'init_global_' . $global;
+				if ( is_null($global_value) && method_exists($this, $method) ) {
+					$this->$method(); // call init method for other globals (except parameters)
+				}
+
+				$allow_filter = in_array( $global, $filter_allowed_globals );
+
 			}
 
-			$method = 'init_global_' . $global;
 
-			if ( !method_exists($this, $method) ) {
-				wp_die(library_viewer_error(
-					'non_registered_method_in_class',
-					$method,
-					get_class($this)
-				));
-			}
 
-			$this->$method(); // call init method
-			if ( isset( $this->globals[$global] ) && in_array( $global, $filter_allowed_globals ) ) {
+			if ( $allow_filter ) {
 				/**
 				 * Filter the $global (the parameters as globals 'have_file_access' etc...).
 				 *
 				 * With this filter, you can filter the global variables that class allows.
 				 * The globals that can be filtered, maybe are the parameters of the shortcode.
-				 * These parameters can be filtered AFTER the rest globals' initialization.
 				 *
 				 * But I mean the corresponding globals variables,
 				 * not exactly the strings/parameters that user pass in the shortcode.
+				 *
+				 * The globals variables that can be filtered with this WP filter are
+				 * these that returned by inner class hook system 'filter_allowed_globals'
 				 *
 				 * For example,
 				 * When the shortcode is
@@ -456,6 +446,7 @@ class Library_Viewer_Shortcode {
 		}
 
 	}
+
 
 	/**
 	 * Initialize the parameters
@@ -1183,17 +1174,79 @@ class Library_Viewer_Shortcode {
 	 * breadcrumb, containing folders and files, text at beginning, text at end.
 	 *
 	 * @since 2.0.0
+	 * @since 3.3.1 Filter added
 	 */
 	protected function print_folder_contents()
 	{
-		$this->print_folder_text_at_beginning();
+		$methods = [
+			'print_folder_text_at_beginning',
+			'print_create_actions_html',
+			'print_containing_folders',
+			'print_containing_files',
+			'print_empty_folder_html', // if is empty
+			'print_folder_text_at_end',
+		];
 
+		foreach ($methods as $method) {
+
+			/**
+			 * Fires before a folder content section is rendered.
+			 *
+			 * The dynamic portion of the hook name, `$method`, refers to the
+			 * rendered folder content section.
+			 *
+			 * Possible values for `$method`:
+			 *
+			 * - `print_folder_text_at_beginning`
+			 * - `print_create_actions_html`
+			 * - `print_containing_folders`
+			 * - `print_containing_files`
+			 * - `print_empty_folder_html`
+			 * - `print_folder_text_at_end`
+			 *
+			 * @since 3.3.1
+			 *
+			 * @param array $globals Plugin global data. See property's documentation.
+			 */
+			do_action( "lv_before_$method", $this->globals );
+
+			$this->$method();
+
+			/**
+			 * Fires after a folder content section has been rendered.
+			 *
+			 * Dynamic hook name:
+			 *
+			 * `lv_after_{$method}`
+			 *
+			 * Possible values for `$method`:
+			 *
+			 * - `print_folder_text_at_beginning`
+			 * - `print_create_actions_html`
+			 * - `print_containing_folders`
+			 * - `print_containing_files`
+			 * - `print_empty_folder_html`
+			 * - `print_folder_text_at_end`
+			 *
+			 * Example:
+			 *
+			 * `lv_after_print_containing_files`
+			 *
+			 * @since 3.3.1
+			 *
+			 * @param array $this->globals See property's documentation.
+			 */
+			do_action("lv_after_$method", $this->globals);
+		}
+	}
+
+	protected function print_create_actions_html()
+	{
 		echo $this->get_create_actions_html();
+	}
 
-		$this->print_containing_folders();
-
-		$this->print_containing_files();
-
+	protected function print_empty_folder_html()
+	{
 		if ( 0 === $this->all_folders_counter + $this->all_files_counter ) {
 			$empty_folder_html = '<span class="library-viewer--empty_folder">' . library_viewer_error('empty_folder') . '</span>';
 
@@ -1212,8 +1265,6 @@ class Library_Viewer_Shortcode {
 			$empty_folder_html = apply_filters('lv_empty_folder_html', $empty_folder_html, $this->globals);
 			echo $empty_folder_html;
 		}
-
-		$this->print_folder_text_at_end();
 	}
 
 	/**

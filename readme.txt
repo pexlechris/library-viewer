@@ -161,6 +161,7 @@ Read also in my blog: [How to add PHP hooks in your WordPress Site](https://www.
  - Create a "Members Only" file area linked to WooCommerce purchases.
 * With the **[LIBRARY VIEWER FILE MANAGER ADD-ON](https://www.pexlechris.dev/library-viewer/fm-wp)** you can:
  - Allow users to upload, rename, delete, and manage files directly from the front-end.
+   Uploaded files can optionally be added to the WordPress Media Library using the `lvfm_create_attachment_for_uploaded_file` hook.
  - Use the library as a powerful front-end file manager for your admins or specific user roles.
 
 
@@ -187,6 +188,11 @@ Read also in my blog: [How to add PHP hooks in your WordPress Site](https://www.
 
  = Can users upload or manage folders & files from the front-end? =
  Yes, by adding the **[Library Viewer File Manager Add-on](https://www.pexlechris.dev/library-viewer/fm-wp)**. This enables front-end uploading, renaming, and deletion of files and folders based on user roles.
+
+
+= Can uploaded files be automatically added to the WordPress Media Library? =
+Yes. By default, this feature is disabled.
+You can enable Media Library attachment creation using the `lvfm_create_attachment_for_uploaded_file` hook.
 
 
  = Can I display a folder that is outside of my WordPress root directory? =

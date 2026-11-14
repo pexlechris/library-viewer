@@ -2,17 +2,17 @@
 /**
  * Plugin Name: Library Viewer
  * Description: This is a File & Folder Viewer of FTP folder: yoursite.com/library. So using the shortcode [library-viewer], you can print the containing folders & files of your library on front-end 
- * Version: 3.3.1
- * Stable tag: 3.3.1
+ * Version: 3.3.2
+ * Stable tag: 3.3.2
  * Plugin URI: https://www.pexlechris.dev/library-viewer
  * Author: Pexle Chris
  * Author URI: https://www.pexlechris.dev
  * Contributors: pexlechris
  * Text Domain: library-viewer
  * Domain Path: /languages
- * Tested up to: 7.0
+ * Tested up to: 7.1.4
  * Requires PHP: 7.4
- * Tested up to PHP: 8.3
+ * Tested up to PHP: 8.4
  * License: GPLv2
  */
 
@@ -22,7 +22,7 @@
  * @since 2.0.0
  * @var string
  */
-define('LIBRARY_VIEWER_VERSION', '3.3.1');
+define('LIBRARY_VIEWER_VERSION', '3.3.2');
 
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -86,7 +86,7 @@ define('LIBRARY_VIEWER_DOCUMENTATION_URL', 'https://www.pexlechris.dev/library-v
  * @since 2.0.0
  * @var string
  */
-define('LIBRARY_VIEWER_PRO_VERSION_REQUIRED_FOR_LV', '2.0.5');
+define('LIBRARY_VIEWER_PRO_VERSION_REQUIRED_FOR_LV', '2.1.1');
 
 
 /**

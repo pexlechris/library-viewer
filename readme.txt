@@ -5,12 +5,12 @@ Plugin URI: https://www.pexlechris.dev/library-viewer
 Author: Pexle Chris
 Author URI: https://www.pexlechris.dev
 Tags: FTP, file manager, file list, download manager
-Version: 3.3.1
-Stable tag: 3.3.1
+Version: 3.3.2
+Stable tag: 3.3.2
 Requires at least: 3.0.0
-Tested up to: 7.0
+Tested up to: 7.1.4
 Requires PHP: 7.4
-Tested up to PHP: 8.3
+Tested up to PHP: 8.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -290,6 +290,12 @@ You can enable Media Library attachment creation using the `lvfm_create_attachme
 
 
 == Changelog ==
+ = 3.3.2 =
+* Tested up to WP: 7.1.4
+* Tested up to PHP: 8.4
+* Updated the minimum required version of Library Viewer Pro to 2.1.1.
+* **[Security Fix]**: Fixed a Path Traversal vulnerability that could allow unauthenticated users to access files outside the configured library directory. Thanks to Hung Hsien-Yuan for responsibly reporting this issue.
+
  = 3.3.1 =
 * [New]: New hooks introduced: `lv_before_{$method}` and `lv_after_{$method}` for all folder content rendering sections (`print_folder_text_at_beginning`, `print_create_actions_html`, `print_containing_folders`, `print_containing_files`, `print_empty_folder_html`, and `print_folder_text_at_end`).
 * [Enhancement]: Minor change about how the filters `lv_filter_global_{$global}` are called

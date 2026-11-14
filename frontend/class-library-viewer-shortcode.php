@@ -1862,10 +1862,16 @@ class Library_Viewer_Shortcode {
 	 * checking the global variable $path.
 	 *
 	 * @since 2.0.0
+	 * @since 3.3.2 Security Checks for /../ in path
+	 *
 	 * @return bool
 	 */
 	protected function is_dir_accessible($dir)
 	{
+		if( strpos($dir, '/../') !== false || strpos($dir, '../') === 0 ){
+			return false;
+		}
+
 		if ( 0 === strpos($dir , 'library') ) {
 			return true;
 		} else {

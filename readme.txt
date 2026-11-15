@@ -5,8 +5,8 @@ Plugin URI: https://www.pexlechris.dev/library-viewer
 Author: Pexle Chris
 Author URI: https://www.pexlechris.dev
 Tags: FTP, file manager, file list, download manager
-Version: 3.3.2
-Stable tag: 3.3.2
+Version: 3.3.3
+Stable tag: 3.3.3
 Requires at least: 3.0.0
 Tested up to: 7.1.4
 Requires PHP: 7.4
@@ -290,6 +290,9 @@ You can enable Media Library attachment creation using the `lvfm_create_attachme
 
 
 == Changelog ==
+ = 3.3.3 =
+* [Bug Fix]: Fixed an encoding issue in `frontend/class-library-viewer-file.php` that could cause the plugin's frontend file viewer to display garbled characters instead of the expected content in certain cases.
+
  = 3.3.2 =
 * Tested up to WP: 7.1.4
 * Tested up to PHP: 8.4

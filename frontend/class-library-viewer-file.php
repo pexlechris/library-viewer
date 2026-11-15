@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * Class Library_Viewer_File.
